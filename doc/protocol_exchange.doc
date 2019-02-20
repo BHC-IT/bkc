@@ -1,0 +1,30 @@
+about the exchange of data between peer
+
+1xx : respond code
+2xx : systeme code
+3xx : push data code
+4xx : pull data code
+
+1xx
+
+
+2xx
+280 : log off.
+
+3xx
+301 : push message. use to test the connection between peer.
+302 : push the information about node connected to you.
+303 : push disconnected peer.
+305 : push a transaction with signature & without proof.
+310 : push a transaction with signature & proof & parity.
+320 : push a creation with signature.
+350 : push your identity (public key).
+352 : push your identity (port).
+370 : push the current book.
+390 : push a user balance
+
+4xx
+401 : ask for a 302 full response.
+405 : ask for a transaction to be signed.
+470 : ask for the current book.
+490 : ask for a user balance.

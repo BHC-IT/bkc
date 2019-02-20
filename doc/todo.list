@@ -1,0 +1,29 @@
+HIGH :
+	user client
+	js lib
+	windows port
+	unpure resolve conflict
+	protocol documentation
+	verifie users
+	white/black list
+
+MID:
+	known peer dumping/loading
+	admin level 3
+	proper inner documentation
+	clean protocol
+	clean inner protocol
+	auto port forwarding
+	error log
+	remove consumed transaction
+	pure resolve conflict
+	admin level 2
+
+LOW:
+	proper c++ lib
+	encrypt data
+	admin level 1/0
+	analytics
+	multi-currency on chain
+	none fully connected netorking
+	better data race
