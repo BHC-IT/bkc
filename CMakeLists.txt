@@ -56,7 +56,8 @@ target_link_libraries(bkcnode PRIVATE RSA)
 target_link_libraries(bkcnode PRIVATE LTC)
 target_link_libraries(bkcnode PRIVATE LTM)
 target_include_directories(bkcnode PRIVATE .)
-
+target_include_directories(bkcnode PRIVATE ./dep/libtomcrypt/src/headers)
+target_include_directories(bkcnode PRIVATE ./dep/libtommath)
 
 add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
