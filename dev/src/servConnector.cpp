@@ -5,6 +5,24 @@
 
 using json = nlohmann::json;
 
+static std::string base_response()
+{
+	std::string str;
+
+	str += "HTTP/1.1 200\r\n";
+	str += "status: 200\r\n";
+	str += "cache-control: private\r\n";
+	str += "connection: close\r\n";
+	str += "content-encoding: text/html\r\n";
+	str += "content-length: 6\r\n";
+	str += "content-type: text/html\r\n";
+	str += "date: Tue, 26 Feb 2019 12:46:33 GMT\r\n";
+	str += "server: \r\n";
+	str += "vary: Accept-Encoding\r\n\r\n";
+	str += "bkc ok\r";
+	return (str);
+}
+
 bkc::node::servCon::servCon(blc::tools::pipe pipe, std::string name, int sock, struct sockaddr client) : actor(pipe, name), _client(sock, client)
 {
 	this->peerProto();
@@ -45,12 +63,22 @@ void bkc::node::servCon::readPeer()
 			v.push_back(rcv);
 		}
 	}
-	if (bkc::node::isPost(v)){
-		bkc::node::httpPost test(v);
+	if (v.size() == 0 || v[0].size() == 0)
+		return;
+	if (v[0].find("POST") != std::string::npos) {
+		int length;
 
-		tmp = this->_client.read(test.getLength());
-		v.push_back(tmp);
-		this->_client << "HTTP/1.1 200 OK\r\nDate: Sat, 03 Dec 2005 11:25:07 GMT\r\nServer: Apache/2.0.52 (Fedora)\r\nLast-Modified: Sat, 03 Dec 2005 10:23:07 GMT\r\nETag: \"2b8b2-150-857bb381\"\r\nAccept-Ranges: bytes\r\nContent-Length: 416\r\nKeep-Alive: timeout=10, max=100\r\nConnection: close\r\nContent-Type: text/html; charset=ISO-8859-1\r\nContent-Length: 2\r\n\r\nok\r\n";
+		for (auto it : v){
+			if (it.find("content-length:") != std::string::npos){
+				blc::tools::serializable::cut(it, ' ');
+				length = std::stoi(it);
+			}
+		}
+		tmp = this->_client.read(length);
+		this->_client << base_response() << blc::endl;
+	} else if (v[0].find("HTTP/1.1") != std::string::npos) {
+		this->_client << base_response() << blc::endl;
+		return;
 	}
 	nlohmann::json js = nlohmann::json::parse(tmp);
 
@@ -74,7 +102,11 @@ void bkc::node::servCon::thick()
 		if (this->_pipe.readable())
 			this->readMaster();
 		if (this->_client.readable()){
-			this->readPeer();
+			try {
+				this->readPeer();
+			} catch (nlohmann::detail::parse_error &e) {
+				std::cerr << "error parsing: " << e.what() << std::endl;
+			}
 		}
 		std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(5));
 	}

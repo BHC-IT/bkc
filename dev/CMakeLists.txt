@@ -23,7 +23,6 @@ set (SRCS
 	src/main.cpp
 	src/peerConnector.cpp
 	src/peerServer.cpp
-	src/rsaKey.cpp
 	src/servConnector.cpp
 	src/trans.cpp
 	)
@@ -61,7 +60,6 @@ set (HEADER
 	include/meta.hpp
 	include/peerConnector.hpp
 	include/peerServer.hpp
-	include/rsaKey.hpp
 	include/servConnector.hpp
 	include/trans.hpp
 	)
@@ -70,8 +68,6 @@ add_library(devobj STATIC ${SRCS} ${HEADER} ${PROTOS})
 
 target_include_directories(devobj PRIVATE ./include)
 target_include_directories(devobj PRIVATE ../)
-target_include_directories(devobj PRIVATE ${CMAKE_SOURCE_DIR}/dep/libtomcrypt/src/headers)
-target_include_directories(devobj PRIVATE ${CMAKE_SOURCE_DIR}/dep/libtommath)
 target_link_libraries(devobj PRIVATE Threads::Threads)
 target_link_libraries(devobj PRIVATE blc)
 
