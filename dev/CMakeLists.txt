@@ -7,8 +7,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 find_package(blc REQUIRED)
 
-find_package(nlohmann_json 3.2.0 REQUIRED)
-
 set (SRCS
 	src/adminConnector.cpp
 	src/book.cpp
@@ -68,10 +66,9 @@ add_library(devobj STATIC ${SRCS} ${HEADER} ${PROTOS})
 
 target_include_directories(devobj PRIVATE ./include)
 target_include_directories(devobj PRIVATE ../)
+target_include_directories(devobj PRIVATE ../include/.)
 target_link_libraries(devobj PRIVATE Threads::Threads)
 target_link_libraries(devobj PRIVATE blc)
-
-target_link_libraries(devobj PRIVATE nlohmann_json::nlohmann_json)
 
 add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
