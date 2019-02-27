@@ -27,5 +27,5 @@ target_link_libraries(RSA PRIVATE LTM)
 target_link_libraries(RSA PRIVATE LTC)
 
 target_include_directories(RSA PRIVATE ./include)
-target_include_directories(RSA PRIVATE ./libtomcrypt/src/headers)
+target_include_directories(RSA PRIVATE ./libtomcrypt/src/headers/.)
 target_include_directories(RSA PRIVATE ./libtommath)
