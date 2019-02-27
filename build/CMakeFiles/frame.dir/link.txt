@@ -1,2 +1,0 @@
-/usr/bin/ar qc libframe.a  CMakeFiles/frame.dir/src/actorRep.cpp.o CMakeFiles/frame.dir/src/bfcmain.cpp.o CMakeFiles/frame.dir/src/exit.cpp.o CMakeFiles/frame.dir/src/flag.cpp.o CMakeFiles/frame.dir/src/masterThread.cpp.o CMakeFiles/frame.dir/src/usage.cpp.o
-/usr/bin/ranlib libframe.a
