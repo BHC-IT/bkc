@@ -31,7 +31,7 @@ set (HEADER
 	bfc/usage.hpp
 	)
 
-set (GCC_COVERAGE_COMPILE_FLAGS "-g3 -std=c++17 -O2 -fno-stack-protector -DNDEBUG -Wall -fno-rtti -DUSE_LTM -DLTM_DESC -DMP_32BIT")
+set(GCC_COVERAGE_COMPILE_FLAGS "-O2 -fno-stack-protector -DNDEBUG -Wall -fno-rtti -DUSE_LTM -DLTM_DESC -DMP_32BIT")
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
@@ -49,10 +49,15 @@ target_include_directories(frame PRIVATE .)
 target_include_directories(frame PRIVATE ./dep/libtomcrypt/src/headers)
 target_include_directories(frame PRIVATE ./dep/libtommath)
 
+set_property(TARGET frame PROPERTY CXX_STANDARD 11)
+
+
 add_subdirectory(dev/)
 add_subdirectory(dep/)
 
 add_executable(bkcnode src/__dummy.cpp)
+
+set_property(TARGET bkcnode PROPERTY CXX_STANDARD 17)
 
 target_link_libraries(bkcnode PRIVATE Threads::Threads)
 target_link_libraries(bkcnode PRIVATE blc)
