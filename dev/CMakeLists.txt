@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(dev)
 
-set (GCC_COVERAGE_COMPILE_FLAGS "-g3 -std=c++17 -ltomcrypt -DTFM_DESC -DTFM_DESC -DLTM_DESC -DMP_32BIT -USE_TFM")
+set (GCC_COVERAGE_COMPILE_FLAGS "-g3 -std=c++17 -DTFM_DESC -DTFM_DESC -DLTM_DESC -DMP_32BIT -USE_TFM")
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)

@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(RSA)
 
+set (GCC_COVERAGE_COMPILE_FLAGS "-g3 -std=c++17 -DTFM_DESC -DTFM_DESC -DLTM_DESC -DMP_32BIT -USE_TFM")
 
 set(RSA_MAJOR_VERSION 0)
 set(RSA_MINOR_VERSION 1)
