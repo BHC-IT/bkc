@@ -431,9 +431,9 @@ static inline ulong64 ROR64(ulong64 word, int i)
 
 /* extract a byte portably */
 #ifdef _MSC_VER
-   #define byte(x, n) ((unsigned char)((x) >> (8 * (n))))
+   #define ltc_byte(x, n) ((unsigned char)((x) >> (8 * (n))))
 #else
-   #define byte(x, n) (((x) >> (8 * (n))) & 255)
+   #define ltc_byte(x, n) (((x) >> (8 * (n))) & 255)
 #endif
 
 /* there is no snprintf before Visual C++ 2015 */
