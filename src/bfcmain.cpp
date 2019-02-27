@@ -29,16 +29,16 @@ int blc::main(int ac, std::vector<std::string> av, std::vector<std::string> env)
 		std::cerr << "bfc: error in initialisation : " << e.what() << std::endl;
 	}
 
-	if (bfc::ReqFlags){
-		try {
-			std::vector<std::string> req = bfc::ReqFlags();
-			if (bfc::flags::check(req) == false)
-				throw blc::error::exception(assertError("Bad flags"));
-		} catch (blc::error::exception &e) {
-			std::cerr << e.what() << std::endl;
-			throw blc::error::exception(assertError(""));
-		}
-	}
+	// if (bfc::ReqFlags){
+	// 	try {
+	// 		std::vector<std::string> req = bfc::ReqFlags();
+	// 		if (bfc::flags::check(req) == false)
+	// 			throw blc::error::exception(assertError("Bad flags"));
+	// 	} catch (blc::error::exception &e) {
+	// 		std::cerr << e.what() << std::endl;
+	// 		throw blc::error::exception(assertError(""));
+	// 	}
+	// }
 
 	if (bfc::_exit == true)
 		return (ret);
