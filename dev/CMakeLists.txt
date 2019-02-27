@@ -64,15 +64,17 @@ set (HEADER
 
 add_library(devobj STATIC ${SRCS} ${HEADER} ${PROTOS})
 
-set_property(TARGET devobj PROPERTY CXX_STANDARD 17)
-
 target_include_directories(devobj PRIVATE ./include)
 target_include_directories(devobj PRIVATE ../)
 target_include_directories(devobj PRIVATE ../include/.)
 target_include_directories(devobj PRIVATE ../dep/rsa/libtomcrypt/src/headers/.)
 target_include_directories(devobj PRIVATE ../dep/rsa/libtommath)
+target_include_directories(devobj PRIVATE ../dep/rsa/include)
+
 target_link_libraries(devobj PRIVATE Threads::Threads)
 target_link_libraries(devobj PRIVATE blc)
+
+set_property(TARGET devobj PROPERTY CXX_STANDARD 17)
 
 add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")

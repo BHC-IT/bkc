@@ -49,15 +49,10 @@ target_include_directories(frame PRIVATE .)
 target_include_directories(frame PRIVATE ./dep/rsa/libtomcrypt/src/headers/.)
 target_include_directories(frame PRIVATE ./dep/rsa/libtommath)
 
-set_property(TARGET frame PROPERTY CXX_STANDARD 11)
-
-
 add_subdirectory(dev/)
 add_subdirectory(dep/)
 
 add_executable(bkcnode src/__dummy.cpp)
-
-set_property(TARGET bkcnode PROPERTY CXX_STANDARD 17)
 
 target_link_libraries(bkcnode PRIVATE Threads::Threads)
 target_link_libraries(bkcnode PRIVATE blc)
@@ -69,6 +64,10 @@ target_link_libraries(bkcnode PRIVATE LTM)
 target_include_directories(bkcnode PRIVATE .)
 target_include_directories(bkcnode PRIVATE ./dep/rsa/libtomcrypt/src/headers/.)
 target_include_directories(bkcnode PRIVATE ./dep/rsa/libtommath)
+
+set_property(TARGET frame PROPERTY CXX_STANDARD 11)
+set_property(TARGET bkcnode PROPERTY CXX_STANDARD 17)
+
 
 add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
