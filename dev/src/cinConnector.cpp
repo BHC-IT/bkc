@@ -42,11 +42,10 @@ void bkc::node::cinCon::readMaster()
 void bkc::node::cinCon::thick()
 {
 	while (this->isAlive()){
-		if (blc::tools::readable(this->_infd)){
-			this->readCin();
-		} else if (this->_pipe.readable()) {
+		// if (blc::tools::readable(this->_infd))
+		this->readCin();
+		if (this->_pipe.readable())
 			this->readMaster();
-		}
 		std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(5));
 	}
 }

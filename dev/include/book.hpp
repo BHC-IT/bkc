@@ -24,6 +24,8 @@ namespace bkc {
 		std::vector<bkc::trans>	getByAmount(double amount) const;
 		std::vector<bkc::trans>	getByTime(int time) const;
 
+		std::vector<bkc::trans>	getAllProof(const std::string &keys);
+
 		std::string 	serialize() const;
 		void		unserialize(const std::string &str);
 		void		load(std::istream &stream);

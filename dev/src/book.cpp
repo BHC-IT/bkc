@@ -155,6 +155,18 @@ std::vector<bkc::trans> bkc::book::getByTime(int time) const
 	return (v);
 }
 
+std::vector<bkc::trans> bkc::book::getAllProof(const std::string &keys)
+{
+	std::vector<bkc::trans> v;
+	std::string tmp = keys;
+
+	for (auto it = blc::tools::serializable::cut(tmp, '/'); tmp != ""; it = blc::tools::serializable::cut(tmp, '/')){
+		v.push_back(this->getBySign(it));
+	}
+	return (v);
+}
+
+
 std::string bkc::book::serialize() const
 {
 	std::string str;

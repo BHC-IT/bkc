@@ -54,6 +54,7 @@ bkc::trans bkc::chain::getLeftOver(const bkc::trans &t) const
 
 	tmp = proof.getAmount() - t.getAmount();
 	parity = bkc::trans::createTrans(proof.getReceiver(), proof.getReceiver(), round(tmp * 1000.0) / 1000.0, bkc::myLog);
+	parity.setProof(t.getProof());
 	return (parity);
 }
 
@@ -67,6 +68,7 @@ bkc::trans bkc::chain::consum(const std::string &sign)
 		already_spent += it.getAmount();
 	}
 	bkc::trans t = bkc::trans::createTrans(proof.getSender(), proof.getSender(), proof.getAmount() - already_spent, bkc::myLog);
+	t.setProof(sign);
 	this->add(t);
 	return (t);
 }
@@ -132,8 +134,13 @@ void bkc::chain::readMaster()
 
 void bkc::chain::thick()
 {
+	static int i = 0;
+
 	if (this->_pipe.readable()) {
 		this->readMaster();
 	}
-	// this->dump();
+	if (i == 1000){
+		this->dump();
+		i = 0;
+	}
 }
