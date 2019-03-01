@@ -1,5 +1,7 @@
 about the exchange of data between peer
 
+opcode:
+
 1xx : respond code
 2xx : systeme code
 3xx : push data code
@@ -15,7 +17,7 @@ about the exchange of data between peer
 301 : push message. use to test the connection between peer.
 302 : push the information about node connected to you.
 303 : push disconnected peer.
-305 : push a transaction with signature & without proof.
+305 : push a transaction with signature & without proof, asking for a proof and parity.
 310 : push a transaction with signature & proof & parity.
 320 : push a creation with signature.
 350 : push your identity (public key).
@@ -24,7 +26,34 @@ about the exchange of data between peer
 390 : push a user balance
 
 4xx
-401 : ask for a 302 full response.
+401 : ask for a 301 signed message.
+402 : ask for a 302 full response.
 405 : ask for a transaction to be signed.
 470 : ask for the current book.
 490 : ask for a user balance.
+
+
+
+
+
+how to send data :
+data format:
+	the data packet is made of at least 3 field, serialized in JSON format :
+		code: represente the opcode,
+		data: data field formated for correctly for the opcode
+		user: your public key,
+		signature: RSA signature of the 3 field above in the algo : "{code:" + code + ",data:" + data + ",user:" + user + "}". needed in noneconnected protocole.
+
+
+
+
+how to send currency as user (without book):
+-> : to peer
+<- : from peer
+
+trans: transaction representing the sending
+parity: transaction representing the parity.
+
+-> 305 data:trans(unsigned)
+<- 405 data:{transaction: trans(unsigned), parity: parity(unsigned)}
+-> 310 data:{transaction: trans(signed), parity: parity(signed)}

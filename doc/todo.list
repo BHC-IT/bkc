@@ -1,6 +1,6 @@
 HIGH :
-	user client
-	js lib
+	user client #done
+	js lib #done
 	windows port
 	unpure resolve conflict
 	protocol documentation
@@ -25,5 +25,5 @@ LOW:
 	admin level 1/0
 	analytics
 	multi-currency on chain
-	none fully connected netorking
+	none fully connected networking in bkcnode
 	better data race

@@ -1,0 +1,62 @@
+compile :
+
+git clone https://github.com/BHC-IT/bkc.git
+cd bkc
+mkdir build && cd build
+cmake .. && make
+
+
+
+
+
+update :
+see compile section
+
+
+
+
+
+create a chain :
+
+./bkcnode --create --use --init=CHAIN_NAME --a
+
+run a chain as admin :
+
+./bkcnode --conf=PATH_TO_CONF --dump=PATH_TO_DUMP --a
+default PATH_TO_CONF is ./conf.bkc
+default PATH_TO_DUMP is ./dump.dc
+
+
+
+
+
+connect to an existing chain as miner :
+
+obtain the conf file for the chain.
+./bkcnode --conf=PATH_TO_CONF
+default PATH_TO_CONF is ./conf.bkc
+
+
+
+
+
+connect connect to an existing chain as user :
+see bkcuser software
+
+
+
+
+
+USAGE:
+
+--a						run as admin of the chain
+--conf=FILE					chain conf file to use. default is ./conf.bkc
+--create					create a pair of key. will erase already existing key
+--help						show this helper
+--init=CHAIN_NAME				create a init file for a new chain
+--input=FILE					read a file as the new stdin
+--input_chain=FILE				file to get the chain state, default is ./dump.dc
+--output_chain=FILE				file to dump the chain state, default is ./dump.dc
+--pri=FILE					select the public key file to read (or write if --create is used)
+--pub=FILE					select the public key file to read (or write if --create is used)
+--use						use the newly created key and/or configuration file to run
