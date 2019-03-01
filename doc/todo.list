@@ -1,29 +1,30 @@
 HIGH :
-	user client #done
-	js lib #done
-	windows port
-	unpure resolve conflict
-	protocol documentation
-	verifie users
-	white/black list
+	user client #100%
+	js lib #100%
+	windows port #50%
+	unpure resolve conflict #95%
+	protocol documentation #95%
+	verifie users #0%
+	white/black list #0%
+	multi-proof #50%
 
 MID:
-	known peer dumping/loading
-	admin level 3
-	proper inner documentation
-	clean protocol
-	clean inner protocol
-	auto port forwarding
-	error log
-	remove consumed transaction
-	pure resolve conflict
-	admin level 2
+	known peer dumping/loading #0%
+	admin level 3 #0%
+	proper inner documentation #0%
+	clean protocol #0%
+	clean inner protocol #0%
+	auto port forwarding #0%
+	error log #0%
+	remove consumed transaction #0%
+	pure resolve conflict #0%
+	admin level 2 #0%
 
 LOW:
-	proper c++ lib
-	encrypt data
-	admin level 1/0
-	analytics
-	multi-currency on chain
-	none fully connected networking in bkcnode
-	better data race
+	proper c++ lib #40%
+	encrypt data #0%
+	admin level 1/0 #0%
+	analytics #0%
+	multi-currency on chain #-50%
+	none fully connected networking in bkcnode #0%
+	better data race #∞%
