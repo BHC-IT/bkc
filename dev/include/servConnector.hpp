@@ -13,6 +13,9 @@ namespace bkc {
 			void peerProto();
 			void masterProto();
 
+			std::string handleGET(const std::vector<std::string> &v) const;
+			std::string handlePOST(const std::vector<std::string> &v) const;
+
 			void readMaster();
 			void readPeer();
 

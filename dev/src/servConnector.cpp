@@ -5,7 +5,7 @@
 
 using json = nlohmann::json;
 
-static std::string html_res()
+static std::string html_res(std::string str)
 {
 	std::string tmp;
 
@@ -26,29 +26,29 @@ static std::string html_res()
 	tmp += "font-family: verdana;";
 	tmp += "font-size: 20px;";
 	tmp += "}";
-	tmp += "</style><h1>bkc status : </h1><br><h2>ok</h2></html>";
+	tmp += "</style><h1>bkc status : </h1><br><h2>" + str + "</h2></html>";
 
 	return (tmp);
 }
 
-static std::string base_response()
+static std::string base_response(std::string str)
 {
-	std::string str;
+	std::string res;
 
-	std::string page = html_res();
+	std::string page = html_res(str);
 
-	str += "HTTP/1.1 200\r\n";
-	str += "status: 200\r\n";
-	str += "cache-control: private\r\n";
-	str += "connection: close\r\n";
-	str += "content-encoding: text/html\r\n";
-	str += "content-length: " + std::to_string(page.size()) + "\r\n";
-	str += "content-type: text/html\r\n";
-	str += "date: Tue, 26 Feb 2019 12:46:33 GMT\r\n";
-	str += "server: \r\n";
-	str += "vary: Accept-Encoding\r\n\r\n";
-	str += page +"\r";
-	return (str);
+	res += "HTTP/1.1 200\r\n";
+	res += "status: 200\r\n";
+	res += "cache-control: private\r\n";
+	res += "connection: close\r\n";
+	res += "content-encoding: text/html\r\n";
+	res += "content-length: " + std::to_string(page.size()) + "\r\n";
+	res += "content-type: text/html\r\n";
+	res += "date: Tue, 26 Feb 2019 12:46:33 GMT\r\n";
+	res += "server: \r\n";
+	res += "vary: Accept-Encoding\r\n\r\n";
+	res += page +"\r";
+	return (res);
 }
 
 bkc::node::servCon::servCon(blc::tools::pipe pipe, std::string name, int sock, struct sockaddr client) : actor(pipe, name), _client(sock, client)
@@ -76,6 +76,55 @@ void bkc::node::servCon::readMaster()
 	}
 }
 
+static std::string replace(std::string& s, const std::string& toReplace, const std::string& replaceWith)
+{
+	std::size_t pos = s.find(toReplace);
+	if (pos == std::string::npos) return s;
+	return s.replace(pos, toReplace.length(), replaceWith);
+}
+
+static std::string replaceAll(std::string& s, const std::string& toReplace, const std::string& replaceWith)
+{
+	for (; s.find(toReplace) != std::string::npos;){
+		replace(s, toReplace, replaceWith);
+	}
+	return (s);
+}
+
+std::string bkc::node::servCon::handleGET(const std::vector<std::string> &v) const
+{
+	int length;
+	std::string tmp;
+	std::string data = v[0];
+	try {
+		blc::tools::serializable::cut(data, '?');
+		data = blc::tools::serializable::cut(data, ' ');
+		data = replaceAll(data, "%22", "\"");
+		data = replaceAll(data, "%20", " ");
+		std::cout << "data : " << data << std::endl;
+		json j = json::parse(data);
+		tmp = data;
+	} catch (std::exception &e) {
+		return ("error");
+	}
+	return (tmp);
+}
+
+std::string bkc::node::servCon::handlePOST(const std::vector<std::string> &v) const
+{
+	int length;
+	std::string tmp;
+
+	for (auto it : v){
+		if (it.find("content-length:") != std::string::npos){
+			blc::tools::serializable::cut(it, ' ');
+			length = std::stoi(it);
+		}
+	}
+	tmp = this->_client.read(length);
+	return (tmp);
+}
+
 void bkc::node::servCon::readPeer()
 {
 	int				code = 0;
@@ -93,19 +142,20 @@ void bkc::node::servCon::readPeer()
 	}
 	if (v.size() == 0 || v[0].size() == 0)
 		return;
-	if (v[0].find("POST") != std::string::npos) {
-		int length;
-
-		for (auto it : v){
-			if (it.find("content-length:") != std::string::npos){
-				blc::tools::serializable::cut(it, ' ');
-				length = std::stoi(it);
-			}
-		}
-		tmp = this->_client.read(length);
-		this->_client << base_response() << blc::endl;
+	for (auto it : v){
+		std::cout << it << std::endl;
+	}
+	if (v[0].find("GET") != std::string::npos){
+		tmp = this->handleGET(v);
+		if (tmp == "error")
+			this->_client << base_response("error") << blc::endl;
+		else
+			this->_client << base_response("ok") << blc::endl;
+	} else if (v[0].find("POST") != std::string::npos) {
+		tmp = this->handlePOST(v);
+		this->_client << base_response("ok") << blc::endl;
 	} else if (v[0].find("HTTP/1.1") != std::string::npos) {
-		this->_client << base_response() << blc::endl;
+		this->_client << base_response("ok") << blc::endl;
 		return;
 	}
 	nlohmann::json js = nlohmann::json::parse(tmp);
