@@ -5,21 +5,49 @@
 
 using json = nlohmann::json;
 
+static std::string html_res()
+{
+	std::string tmp;
+
+	tmp += "<html>";
+	tmp += "<style>";
+	tmp += "body {";
+	tmp += "background-color: lightblue;";
+	tmp += "}";
+	tmp += "h1 {";
+	tmp += "color: white;";
+	tmp += "text-align: center;";
+	tmp += "}";
+	tmp += "h2 {";
+	tmp += "color: green;";
+	tmp += "text-align: center;";
+	tmp += "}";
+	tmp += "p {";
+	tmp += "font-family: verdana;";
+	tmp += "font-size: 20px;";
+	tmp += "}";
+	tmp += "</style><h1>bkc status : </h1><br><h2>ok</h2></html>";
+
+	return (tmp);
+}
+
 static std::string base_response()
 {
 	std::string str;
+
+	std::string page = html_res();
 
 	str += "HTTP/1.1 200\r\n";
 	str += "status: 200\r\n";
 	str += "cache-control: private\r\n";
 	str += "connection: close\r\n";
 	str += "content-encoding: text/html\r\n";
-	str += "content-length: 6\r\n";
+	str += "content-length: " + std::to_string(page.size()) + "\r\n";
 	str += "content-type: text/html\r\n";
 	str += "date: Tue, 26 Feb 2019 12:46:33 GMT\r\n";
 	str += "server: \r\n";
 	str += "vary: Accept-Encoding\r\n\r\n";
-	str += "bkc ok\r";
+	str += page +"\r";
 	return (str);
 }
 
