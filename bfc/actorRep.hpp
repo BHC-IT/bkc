@@ -3,7 +3,7 @@
 #include <blc/blc.hpp>
 
 namespace bfc {
-	class actorRep : public blc::tools::nonCopyable {
+	class actorRep : public blc::symbole::nonCopyable {
 	public:
 		actorRep(blc::tools::pipe pipe, std::string name);
 		virtual ~actorRep() = default;

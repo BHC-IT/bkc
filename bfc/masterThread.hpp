@@ -5,7 +5,7 @@
 #include "bfc/actorRep.hpp"
 
 namespace bfc {
-	class masterThread : public blc::tools::nonCopyable {
+	class masterThread : public blc::symbole::nonCopyable {
 	public:
 		~masterThread();
 		static masterThread	&init();
