@@ -38,9 +38,16 @@ void bfc::initActor()
 	bfc::usage.add({"--pub=FILE"}, "select the public key file to read (or write if --create is used)");
 	bfc::usage.add({"--pri=FILE"}, "select the public key file to read (or write if --create is used)");
 	bfc::usage.add({"--conf=FILE"}, "read a designated conf file. default: ./conf.bkc");
+	bfc::usage.add({"--version"}, "print version");
 
 	if (bfc::flags::isSet("help")){
 		std::cout << bfc::usage << std::endl;
+		bfc::exit();
+		return;
+	}
+	if (bfc::flags::isSet("version")){
+		std::cout << "\tbkc version : " << BKC_MAJOR_VERSION << "." << BKC_MINOR_VERSION << ". (build:" << BKC_PATCH_VERSION << ")" << std::endl;
+		std::cout << "\trunning with bfc version : " << BFC_MAJOR_VERSION << "." << BFC_MINOR_VERSION << std::endl;
 		bfc::exit();
 		return;
 	}
