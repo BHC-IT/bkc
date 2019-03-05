@@ -3,10 +3,10 @@ HIGH :
 	js lib #100%
 	windows port #50%
 	unpure resolve conflict #95%
-	protocol documentation #95%
+	protocol documentation #100%
 	verifie users #0%
 	white/black list #0%
-	multi-proof #50%
+	multi-proof #100%
 
 MID:
 	known peer dumping/loading #0%

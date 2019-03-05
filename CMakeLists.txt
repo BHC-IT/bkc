@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 project(bfc)
 
 set(bfc_MAJOR_VERSION 0)
-set(bfc_MINOR_VERSION 1)
-set(bfc_PATCH_VERSION 0)
+set(bfc_MINOR_VERSION 9)
+set(bfc_PATCH_VERSION 5)
 set(bfc_VERSION
 	${bfc_MAJOR_VERSION}.${bfc_MINOR_VERSION}.${bfc_PATCH_VERSION}
 	)
