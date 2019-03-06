@@ -35,7 +35,7 @@ void bkc::node::peerCon::masterProto()
 		json j = {
 			{"code", 302},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -75,7 +75,7 @@ void bkc::node::peerCon::masterProto()
 		json j = {
 			{"code", 350},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -85,7 +85,7 @@ void bkc::node::peerCon::masterProto()
 		json j = {
 			{"code", 352},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -95,7 +95,7 @@ void bkc::node::peerCon::masterProto()
 		json j = {
 			{"code", 370},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -105,7 +105,7 @@ void bkc::node::peerCon::masterProto()
 		json j = {
 			{"code", 401},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -115,7 +115,7 @@ void bkc::node::peerCon::masterProto()
 		json j = {
 			{"code", 470},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -129,7 +129,7 @@ void bkc::node::servCon::masterProto()
 		json j = {
 			{"code", 280},
 			{"data", ""},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -152,7 +152,7 @@ void bkc::node::servCon::masterProto()
 		json j = {
 			{"code", 302},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -192,7 +192,7 @@ void bkc::node::servCon::masterProto()
 		json j = {
 			{"code", 350},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -202,7 +202,7 @@ void bkc::node::servCon::masterProto()
 		json j = {
 			{"code", 352},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -212,7 +212,7 @@ void bkc::node::servCon::masterProto()
 		json j = {
 			{"code", 370},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -222,7 +222,7 @@ void bkc::node::servCon::masterProto()
 		json j = {
 			{"code", 401},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -232,7 +232,7 @@ void bkc::node::servCon::masterProto()
 		json j = {
 			{"code", 470},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;

@@ -40,6 +40,20 @@ std::string bkc::chain::searchProof(const bkc::trans &t) const
 		if (it.getAmount() >= t.getAmount() && this->_book.consumed(it.getSign()) == false)
 			return (it.getSign());
 	}
+	double tot_amout = 0;
+	std::string signature;
+	for (auto it : v){
+		tot_amout += it.getAmount();
+		if (this->_book.consumed(it.getSign()) == false){
+			if (signature == "")
+				signature = it.getSign();
+			else
+				signature += "/" + it.getSign();
+		}
+		if (tot_amout >= t.getAmount()){
+			return (signature);
+		}
+	}
 	return ("");
 }
 
@@ -48,26 +62,34 @@ bkc::trans bkc::chain::getLeftOver(const bkc::trans &t) const
 	bkc::trans parity;
 	if (t.getProof() == "")
 		return (parity);
-	bkc::trans 		proof(this->_book.getBySign(t.getProof()));
+	std::vector<bkc::trans> proofs = this->_book.getAllProof(t.getProof());
 	double			already_spent = 0;
+	double			to_spend = 0;
 	double			tmp;
 
-	tmp = proof.getAmount() - t.getAmount();
-	parity = bkc::trans::createTrans(proof.getReceiver(), proof.getReceiver(), round(tmp * 1000.0) / 1000.0, bkc::myLog);
+	for (auto it : proofs){
+		to_spend += it.getAmount();
+	}
+	tmp = to_spend - t.getAmount();
+	parity = bkc::trans::createTrans(t.getSender(), t.getSender(), round(tmp * 1000.0) / 1000.0, bkc::myLog);
 	parity.setProof(t.getProof());
 	return (parity);
 }
 
 bkc::trans bkc::chain::consum(const std::string &sign)
 {
-	bkc::trans 		proof(this->_book.getBySign(sign));
+	std::vector<bkc::trans> proofs = this->_book.getAllProof(sign);
 	std::vector<bkc::trans>	tmp(this->_book.getByProof(sign));
 	double			already_spent = 0;
+	double			to_spend = 0;
 
 	for (auto it : tmp){
 		already_spent += it.getAmount();
 	}
-	bkc::trans t = bkc::trans::createTrans(proof.getSender(), proof.getSender(), proof.getAmount() - already_spent, bkc::myLog);
+	for (auto it : proofs){
+		to_spend += it.getAmount();
+	}
+	bkc::trans t = bkc::trans::createTrans(proofs[0].getSender(), proofs[0].getSender(), to_spend - already_spent, bkc::myLog);
 	t.setProof(sign);
 	this->add(t);
 	return (t);
@@ -75,24 +97,33 @@ bkc::trans bkc::chain::consum(const std::string &sign)
 
 bool bkc::chain::verify(const bkc::trans &t)
 {
-	bkc::trans proof = this->_book.getBySign(t.getProof());
+	std::vector<bkc::trans> proofs = this->_book.getAllProof(t.getProof());
 
-	if (t.getSender() != proof.getReceiver())
-		return (false);
 	if (t.check() == false)
 		return (false);
-	if (this->_book.exist(t.getProof()) == false)
-		return (false);
-	if (this->_book.consumed(t.getProof()) == true && t.getAmount() != 0)
-		return (false);
+	for (auto it : proofs){
+		if (t.getSender() != it.getReceiver()){
+			return (false);
+		}
+		if (this->_book.exist(it.getSign()) == false){
+			return (false);
+		}
+		if (this->_book.consumed(it.getSign()) == true && t.getAmount() != 0){
+			return (false);
+		}
+	}
 	return (true);
 }
 
 double bkc::chain::leftOver(const bkc::trans &t, const bkc::trans &parity)
 {
-	bkc::trans proof = this->_book.getBySign(t.getProof());
+	std::vector<bkc::trans> proofs = this->_book.getAllProof(t.getProof());
+	double amount = 0;
 
-	return (proof.getAmount() - (t.getAmount() + parity.getAmount()));
+	for (auto it : proofs){
+		amount += it.getAmount();
+	}
+	return (amount - (t.getAmount() + parity.getAmount()));
 }
 
 void bkc::chain::add(const bkc::trans &t)

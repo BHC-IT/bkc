@@ -21,6 +21,9 @@
 #include <iomanip>
 
 bkc::rsaKey	bkc::myLog;
+std::string	bkc::ip;
+std::string	bkc::url;
+int		bkc::port;
 
 void bfc::initActor()
 {
@@ -38,9 +41,16 @@ void bfc::initActor()
 	bfc::usage.add({"--pub=FILE"}, "select the public key file to read (or write if --create is used)");
 	bfc::usage.add({"--pri=FILE"}, "select the public key file to read (or write if --create is used)");
 	bfc::usage.add({"--conf=FILE"}, "read a designated conf file. default: ./conf.bkc");
+	bfc::usage.add({"--version"}, "print version");
 
 	if (bfc::flags::isSet("help")){
 		std::cout << bfc::usage << std::endl;
+		bfc::exit();
+		return;
+	}
+	if (bfc::flags::isSet("version")){
+		std::cout << "\tbkc version : " << BKC_MAJOR_VERSION << "." << BKC_MINOR_VERSION << ". (build:" << BKC_PATCH_VERSION << ")" << std::endl;
+		std::cout << "\trunning with bfc version : " << BFC_MAJOR_VERSION << "." << BFC_MINOR_VERSION << std::endl;
 		bfc::exit();
 		return;
 	}
@@ -64,13 +74,15 @@ int bfc::main()
 		if (bfc::flags::isSet("a") == false) {
 			int port = blc::network::findFreePort();
 
-			bfc::masterThread::_myself = bkc::getMyIp() + ":" + std::to_string(port);
+			bkc::port = port;
+			bkc::ip = bkc::getMyIp();
+			bkc::url = bkc::ip + ":" + std::to_string(bkc::port);
 			std::cout << port << std::endl;
 
 
-			bfc::masterThread::actor("adm").send(352, std::to_string(port));
-			bfc::masterThread::actor("adm").send(401);
-			bfc::masterThread::actor("adm").send(470);
+			// bfc::masterThread::actor("adm").send(352, std::to_string(bkc::port));
+			// bfc::masterThread::actor("adm").send(402);
+			// bfc::masterThread::actor("adm").send(470);
 			bfc::factory<bkc::node::peerServ>("server", 50, port);
 		}
 	} catch (blc::error::exception &e) {

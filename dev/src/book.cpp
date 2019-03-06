@@ -25,9 +25,15 @@ void bkc::book::add(const bkc::trans &t)
 	this->_bySign[t.getSign()] = t;
 	this->_byReceiver[t.getReceiver()].push_back(&this->_bySign[t.getSign()]);
 	this->_bySender[t.getSender()].push_back(&this->_bySign[t.getSign()]);
-	this->_byProof[t.getProof()].push_back(&this->_bySign[t.getSign()]);
 	this->_byAmount[t.getAmount()].push_back(&this->_bySign[t.getSign()]);
 	this->_byTime[t.getTimestamp()].push_back(&this->_bySign[t.getSign()]);
+	// std::vector<bkc::trans> v = this->getAllProof(t.getProof());
+	// if (v.size() != 1){
+	// 	for (auto it : v){
+	// 		this->_byProof[it.getSign()].push_back(&this->_bySign[t.getSign()]);
+	// 	}
+	// }
+	this->_byProof[t.getProof()].push_back(&this->_bySign[t.getSign()]);
 }
 
 void bkc::book::remove(const bkc::trans &t)
@@ -155,12 +161,12 @@ std::vector<bkc::trans> bkc::book::getByTime(int time) const
 	return (v);
 }
 
-std::vector<bkc::trans> bkc::book::getAllProof(const std::string &keys)
+std::vector<bkc::trans> bkc::book::getAllProof(const std::string &keys) const
 {
 	std::vector<bkc::trans> v;
 	std::string tmp = keys;
 
-	for (auto it = blc::tools::serializable::cut(tmp, '/'); tmp != ""; it = blc::tools::serializable::cut(tmp, '/')){
+	for (auto it = blc::tools::serializable::cut(tmp, '/'); it != ""; it = blc::tools::serializable::cut(tmp, '/')){
 		v.push_back(this->getBySign(it));
 	}
 	return (v);

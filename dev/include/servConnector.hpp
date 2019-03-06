@@ -13,6 +13,9 @@ namespace bkc {
 			void peerProto();
 			void masterProto();
 
+			std::string handleGET(const std::vector<std::string> &v) const;
+			std::string handlePOST(const std::vector<std::string> &v) const;
+
 			void readMaster();
 			void readPeer();
 
@@ -22,6 +25,8 @@ namespace bkc {
 			blc::network::Client				_client;
 			blc::tools::protocolFactory<int, std::string>	_peerProto;
 			std::string					_id;
+			std::string					_userKey;
+			std::string					_id_msg;
 		};
 	}
 }

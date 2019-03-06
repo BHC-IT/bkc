@@ -1,6 +1,7 @@
 #include <nlohmann/json.hpp>
 #include <bfc/bfc.hpp>
 #include "peerConnector.hpp"
+#include "identity.hpp"
 #include "httpPost.hpp"
 
 using json = nlohmann::json;
@@ -17,6 +18,13 @@ bkc::node::peerCon::peerCon(blc::tools::pipe pipe, std::string name, std::string
 	} catch (blc::error::exception &e) {
 		bfc::cout << assertError(addr + ":" + std::to_string(port)) << blc::endl;
 	}
+	this->_id_msg = std::to_string(std::rand());
+	json j = {
+		{"code", 403},
+		{"data", this->_id_msg},
+		{"user", bkc::myLog.printablePub()}
+	};
+	this->_client << j.dump() << blc::endl << blc::endl;
 
 	this->start();
 }
@@ -53,6 +61,11 @@ void bkc::node::peerCon::readPeer()
 			v.push_back(rcv);
 		}
 	}
+	if (v.size() == 0 || v[0].size() == 0)
+		return;
+	// for (auto it : v){
+	// 	std::cout << it << std::endl;
+	// }
 	if (bkc::node::isPost(v)){
 		bkc::node::httpPost test(v);
 
@@ -64,6 +77,10 @@ void bkc::node::peerCon::readPeer()
 
 	try {
 		code = js["code"].get<int>();
+		if ((this->_userKey == "" || this->_userKey != js["user"].get<std::string>()) && code > 300 && code < 400){
+			std::cout << "nok" << ", code : " << code << std::endl;
+			this->kill();
+		}
 		tmp = js.dump();
 		this->_peerProto.activate(code, tmp);
 	} catch (std::exception &e) {

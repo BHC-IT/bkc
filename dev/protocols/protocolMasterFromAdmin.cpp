@@ -3,6 +3,7 @@
 
 #include "peerConnector.hpp"
 #include "connectedPeer.hpp"
+#include "identity.hpp"
 #include "chain.hpp"
 
 void bfc::masterThread::adminProto()
@@ -22,7 +23,7 @@ void bfc::masterThread::adminProto()
 	this->_adm.add(302, [this](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){
 		for (int i = data.second.find(';'); i != std::string::npos; i = data.second.find(';')){
 			std::string tmp = blc::tools::serializable::cut(data.second, ';');
-			if (std::find(this->_knownPeer.begin(), this->_knownPeer.end(), tmp) == this->_knownPeer.end() && tmp != bfc::masterThread::_myself){
+			if (std::find(this->_knownPeer.begin(), this->_knownPeer.end(), tmp) == this->_knownPeer.end() && tmp !=  bkc::url){
 				int port = 0;
 				std::string addr = tmp.substr(0, tmp.find(':'));
 
