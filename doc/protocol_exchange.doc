@@ -11,6 +11,7 @@ opcode:
 101 : connection ok
 
 2xx
+203 : signed message
 280 : log off.
 
 3xx

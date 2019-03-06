@@ -21,7 +21,7 @@ static std::string replaceAll(std::string& s, const std::string& toReplace, cons
 	return (s);
 }
 
-static std::string html_res(std::string str)
+static std::string html_res(std::string str, std::string color)
 {
 	std::string tmp;
 
@@ -35,7 +35,7 @@ static std::string html_res(std::string str)
 	tmp += "text-align: center;";
 	tmp += "}";
 	tmp += "h2 {";
-	tmp += "color: green;";
+	tmp += "color: " + color + ";";
 	tmp += "text-align: center;";
 	tmp += "}";
 	tmp += "p {";
@@ -47,11 +47,11 @@ static std::string html_res(std::string str)
 	return (tmp);
 }
 
-static std::string base_response(std::string str)
+static std::string base_response(std::string str, std::string color)
 {
 	std::string res;
 
-	std::string page = html_res(str);
+	std::string page = html_res(str, color);
 
 	res += "HTTP/1.1 200\r\n";
 	res += "status: 200\r\n";
@@ -72,13 +72,6 @@ bkc::node::servCon::servCon(blc::tools::pipe pipe, std::string name, int sock, s
 	this->peerProto();
 	this->masterProto();
 
-	this->_id_msg = std::to_string(std::rand());
-	json j = {
-		{"code", 403},
-		{"data", this->_id_msg},
-		{"user", bkc::myLog.printablePub()}
-	};
-	this->_client << j.dump() << blc::endl << blc::endl;
 	this->start();
 }
 
@@ -141,6 +134,7 @@ void bkc::node::servCon::readPeer()
 	std::string			tmp = " ";
 	std::string			rcv = " ";
 	std::vector<std::string>	v;
+	bool				http = false;
 
 	while (rcv != "\r" && rcv != ""){
 		this->_client >> rcv;
@@ -152,21 +146,31 @@ void bkc::node::servCon::readPeer()
 	}
 	if (v.size() == 0 || v[0].size() == 0)
 		return;
-	// for (auto it : v){
-	// 	std::cout << it << std::endl;
-	// }
 	if (v[0].find("GET") != std::string::npos){
+		http = true;
 		tmp = this->handleGET(v);
 		if (tmp == "error")
-			this->_client << base_response("error") << blc::endl;
+			this->_client << base_response("error : bad data format", "red") << blc::endl;
 		else
-			this->_client << base_response("ok") << blc::endl;
+			this->_client << base_response("ok", "green") << blc::endl;
 	} else if (v[0].find("POST") != std::string::npos) {
+		http = true;
 		tmp = this->handlePOST(v);
-		this->_client << base_response("ok") << blc::endl;
+		this->_client << base_response("ok", "green") << blc::endl;
 	} else if (v[0].find("HTTP/1.1") != std::string::npos) {
-		this->_client << base_response("ok") << blc::endl;
+		http = true;
+		this->_client << base_response("ok", "green") << blc::endl;
 		return;
+	} else {
+		if (this->_id_msg == ""){
+			this->_id_msg = std::to_string(std::rand());
+			json j = {
+				{"code", 403},
+				{"data", this->_id_msg},
+				{"user", bkc::myLog.printablePub()}
+			};
+			this->_client << j.dump() << blc::endl << blc::endl;
+		}
 	}
 	nlohmann::json js = nlohmann::json::parse(tmp);
 
@@ -174,12 +178,18 @@ void bkc::node::servCon::readPeer()
 		code = js["code"].get<int>();
 		if ((this->_userKey == "" || this->_userKey != js["user"].get<std::string>()) && code > 300 && code < 400){
 			std::cout << "nok" << ", code : " << code << std::endl;
+			this->send(280, this->_name);
 			this->kill();
+			return;
 		}
 		tmp = js.dump();
 		this->_peerProto.activate(code, tmp);
 	} catch (std::exception &e) {
 		bfc::cout << "error: client code was: " << e.what() << blc::endl;
+	}
+	if (http){
+		this->send(280, this->_name);
+		this->kill();
 	}
 
 }
