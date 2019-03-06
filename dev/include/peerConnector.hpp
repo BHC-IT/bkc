@@ -21,6 +21,8 @@ namespace bkc {
 			blc::tools::protocolFactory<int, std::string>	_peerProto;
 			blc::network::Socket				_client;
 			std::string					_id;
+			std::string					_userKey;
+			std::string					_id_msg;
 		};
 	}
 }

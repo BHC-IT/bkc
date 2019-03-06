@@ -10,7 +10,7 @@ void bkc::node::admCon::masterProto()
 		json j = {
 			{"code", 280},
 			{"data", ""},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -63,7 +63,7 @@ void bkc::node::admCon::masterProto()
 		json j = {
 			{"code", 350},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -73,7 +73,7 @@ void bkc::node::admCon::masterProto()
 		json j = {
 			{"code", 352},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -83,17 +83,17 @@ void bkc::node::admCon::masterProto()
 		json j = {
 			{"code", 370},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
 		return (0);
 	});
-	this->_masterProto.add(401, [=](std::string str){
+	this->_masterProto.add(402, [=](std::string str){
 		json j = {
-			{"code", 401},
+			{"code", 402},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;
@@ -103,7 +103,7 @@ void bkc::node::admCon::masterProto()
 		json j = {
 			{"code", 470},
 			{"data", str},
-			{"user", "lanath"}
+			{"user", bkc::myLog.printablePub()}
 		};
 
 		this->_client << j.dump() << blc::endl << blc::endl;

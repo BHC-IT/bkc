@@ -18,8 +18,10 @@ namespace bkc {
 
 			void thick();
 		private:
-			blc::network::Socket							_client;
+			blc::network::Socket				_client;
 			blc::tools::protocolFactory<int, std::string>	_admProto;
+			std::string					_userKey;
+			std::string					_id_msg;
 		};
 	}
 }

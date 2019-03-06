@@ -73,7 +73,7 @@ void bfc::masterThread::peerProto()
 		bfc::masterThread::actor("chain").send(370, data.second);
 		return (0);
 	});
-	this->_peer.add(401, [=](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){
+	this->_peer.add(402, [=](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){
 		const bkc::connectedPeer	&con = bkc::connectedPeer::init();
 
 		data.first->second << "302" << blc::endl << con.serialize() << blc::endl;

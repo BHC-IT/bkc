@@ -21,6 +21,9 @@
 #include <iomanip>
 
 bkc::rsaKey	bkc::myLog;
+std::string	bkc::ip;
+std::string	bkc::url;
+int		bkc::port;
 
 void bfc::initActor()
 {
@@ -71,13 +74,15 @@ int bfc::main()
 		if (bfc::flags::isSet("a") == false) {
 			int port = blc::network::findFreePort();
 
-			bfc::masterThread::_myself = bkc::getMyIp() + ":" + std::to_string(port);
+			bkc::port = port;
+			bkc::ip = bkc::getMyIp();
+			bkc::url = bkc::ip + ":" + std::to_string(bkc::port);
 			std::cout << port << std::endl;
 
 
-			bfc::masterThread::actor("adm").send(352, std::to_string(port));
-			bfc::masterThread::actor("adm").send(401);
-			bfc::masterThread::actor("adm").send(470);
+			// bfc::masterThread::actor("adm").send(352, std::to_string(bkc::port));
+			// bfc::masterThread::actor("adm").send(402);
+			// bfc::masterThread::actor("adm").send(470);
 			bfc::factory<bkc::node::peerServ>("server", 50, port);
 		}
 	} catch (blc::error::exception &e) {

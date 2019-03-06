@@ -8,7 +8,7 @@ opcode:
 4xx : pull data code
 
 1xx
-
+101 : connection ok
 
 2xx
 280 : log off.
@@ -26,12 +26,26 @@ opcode:
 390 : push a user balance
 
 4xx
-401 : ask for a 301 signed message.
 402 : ask for a 302 full response.
+403 : ask for a 203 signed message.
 405 : ask for a transaction to be signed.
 470 : ask for the current book.
 490 : ask for a user balance.
 
+
+
+
+how to connect :
+until you are connected to the peer, you cant send msg from the 3xx range.
+to connect to a peer, you have to respond to the 403 opcode following the procedure :
+-> : to peer
+<- : from peer
+
+<- 403, msg
+-> 203, signed msg with your key
+<- 101
+
+you are now connected.
 
 
 
@@ -62,6 +76,12 @@ parity: transaction representing the parity.
 
 
 data formate :
+101
+data : no data
+
+203
+data : signature
+
 280:
 data: no data
 
@@ -112,11 +132,11 @@ transaction: transaction. type: transaction (see transaction section)
 data: balance
 balance : balance of the user as. type : double;
 
-401:
-data: no data
-
 402:
 data: no data
+
+401:
+data: msg to sign
 
 405:
 data: serialized({

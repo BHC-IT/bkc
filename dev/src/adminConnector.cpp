@@ -1,6 +1,7 @@
 #include <nlohmann/json.hpp>
 #include <bfc/bfc.hpp>
 #include "httpPost.hpp"
+#include "identity.hpp"
 #include "adminConnector.hpp"
 
 using json = nlohmann::json;
@@ -17,6 +18,13 @@ bkc::node::admCon::admCon(blc::tools::pipe pipe, std::string name, std::string a
 	} catch (blc::error::exception &e) {
 		bfc::cout << assertError(addr + ":" + std::to_string(port)) << blc::endl;
 	}
+	this->_id_msg = std::to_string(std::rand());
+	json j = {
+		{"code", 403},
+		{"data", this->_id_msg},
+		{"user", bkc::myLog.printablePub()}
+	};
+	this->_client << j.dump() << blc::endl << blc::endl;
 
 	this->start();
 }

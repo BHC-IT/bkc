@@ -1,9 +1,25 @@
 #include <nlohmann/json.hpp>
 #include "servConnector.hpp"
 #include "connectedPeer.hpp"
+#include "identity.hpp"
 #include "httpPost.hpp"
 
 using json = nlohmann::json;
+
+static std::string replace(std::string& s, const std::string& toReplace, const std::string& replaceWith)
+{
+	std::size_t pos = s.find(toReplace);
+	if (pos == std::string::npos) return s;
+	return s.replace(pos, toReplace.length(), replaceWith);
+}
+
+static std::string replaceAll(std::string& s, const std::string& toReplace, const std::string& replaceWith)
+{
+	for (; s.find(toReplace) != std::string::npos;){
+		replace(s, toReplace, replaceWith);
+	}
+	return (s);
+}
 
 static std::string html_res(std::string str)
 {
@@ -56,6 +72,13 @@ bkc::node::servCon::servCon(blc::tools::pipe pipe, std::string name, int sock, s
 	this->peerProto();
 	this->masterProto();
 
+	this->_id_msg = std::to_string(std::rand());
+	json j = {
+		{"code", 403},
+		{"data", this->_id_msg},
+		{"user", bkc::myLog.printablePub()}
+	};
+	this->_client << j.dump() << blc::endl << blc::endl;
 	this->start();
 }
 
@@ -76,21 +99,6 @@ void bkc::node::servCon::readMaster()
 	}
 }
 
-static std::string replace(std::string& s, const std::string& toReplace, const std::string& replaceWith)
-{
-	std::size_t pos = s.find(toReplace);
-	if (pos == std::string::npos) return s;
-	return s.replace(pos, toReplace.length(), replaceWith);
-}
-
-static std::string replaceAll(std::string& s, const std::string& toReplace, const std::string& replaceWith)
-{
-	for (; s.find(toReplace) != std::string::npos;){
-		replace(s, toReplace, replaceWith);
-	}
-	return (s);
-}
-
 std::string bkc::node::servCon::handleGET(const std::vector<std::string> &v) const
 {
 	int length;
@@ -102,6 +110,8 @@ std::string bkc::node::servCon::handleGET(const std::vector<std::string> &v) con
 		data = replaceAll(data, "%22", "\"");
 		data = replaceAll(data, "%20", " ");
 		std::cout << "data : " << data << std::endl;
+		if (data == "")
+			return ("");
 		json j = json::parse(data);
 		tmp = data;
 	} catch (std::exception &e) {
@@ -142,9 +152,9 @@ void bkc::node::servCon::readPeer()
 	}
 	if (v.size() == 0 || v[0].size() == 0)
 		return;
-	for (auto it : v){
-		std::cout << it << std::endl;
-	}
+	// for (auto it : v){
+	// 	std::cout << it << std::endl;
+	// }
 	if (v[0].find("GET") != std::string::npos){
 		tmp = this->handleGET(v);
 		if (tmp == "error")
@@ -162,6 +172,10 @@ void bkc::node::servCon::readPeer()
 
 	try {
 		code = js["code"].get<int>();
+		if ((this->_userKey == "" || this->_userKey != js["user"].get<std::string>()) && code > 300 && code < 400){
+			std::cout << "nok" << ", code : " << code << std::endl;
+			this->kill();
+		}
 		tmp = js.dump();
 		this->_peerProto.activate(code, tmp);
 	} catch (std::exception &e) {

@@ -18,6 +18,8 @@
 #include <ios>
 #include <iomanip>
 
+bkc::rsaKey bkc::admKey;
+
 static void launch(std::string addr, int port)
 {
 	if (bfc::flags::isSet("a")){
@@ -69,6 +71,7 @@ void readConfFile(const std::string &fileName)
 		bkc::rsaKey admKey;
 
 		admKey.importPub(j["adm_key"].get<std::string>());
+		bkc::admKey = admKey;
 		bfc::factory<bkc::chain>("chain", admKey, j["adm_lvl"].get<int>(), in, out);
 	} catch (blc::error::exception &e) {
 		std::cerr << e.what() << std::endl;

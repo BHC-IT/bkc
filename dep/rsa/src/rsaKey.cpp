@@ -144,9 +144,8 @@ bool bkc::rsaKey::verifyPrintable(const std::string &msg, const std::string &sig
 	std::string tmp;
 	std::string str = sign;
 
-	tmp = blc::tools::serializable::cut(str, ' ');
 	try {
-		for(;tmp != ""; tmp = blc::tools::serializable::cut(str, ' '))
+		for(tmp = blc::tools::serializable::cut(str, ' '); tmp != ""; tmp = blc::tools::serializable::cut(str, ' '))
 			data += (char)std::stoi(tmp);
 	} catch (std::invalid_argument &e) {
 		throw blc::error::exception(assertError(e.what()));
@@ -179,10 +178,10 @@ void bkc::rsaKey::importPub(std::string str)
 	std::string key;
 	std::string tmp;
 
-	tmp = blc::tools::serializable::cut(str, ' ');
 	try {
-		for(;tmp != ""; tmp = blc::tools::serializable::cut(str, ' '))
+		for(tmp = blc::tools::serializable::cut(str, ' '); tmp != ""; tmp = blc::tools::serializable::cut(str, ' ')){
 			key += (char)std::stoi(tmp);
+		}
 	} catch (std::invalid_argument &e) {
 		throw blc::error::exception(assertError(e.what()));
 	}
@@ -194,9 +193,8 @@ void bkc::rsaKey::importPriv(std::string str)
 	std::string key;
 	std::string tmp;
 
-	tmp = blc::tools::serializable::cut(str, ' ');
 	try {
-		for(;tmp != ""; tmp = blc::tools::serializable::cut(str, ' '))
+		for(tmp = blc::tools::serializable::cut(str, ' '); tmp != ""; tmp = blc::tools::serializable::cut(str, ' '))
 			key += (char)std::stoi(tmp);
 	} catch (std::invalid_argument &e) {
 		throw blc::error::exception(assertError(e.what()));
