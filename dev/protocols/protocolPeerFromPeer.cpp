@@ -5,6 +5,7 @@
 #include "rsaKey.hpp"
 #include "chain.hpp"
 #include "identity.hpp"
+#include "lists.hpp"
 
 using json = nlohmann::json;
 
@@ -19,7 +20,7 @@ void bkc::node::peerCon::peerProto()
 		bkc::rsaKey key;
 
 		key.importPub(j["user"].get<std::string>());
-		if (key.verifyPrintable(this->_id_msg, j["data"].get<std::string>())){
+		if (key.verifyPrintable(this->_id_msg, j["data"].get<std::string>()) && bkc::lists::isOk(j["user"].get<std::string>())){
 			this->_userKey = j["user"].get<std::string>();
 			json j = {
 				{"code", 101},
@@ -111,6 +112,12 @@ void bkc::node::peerCon::peerProto()
 		this->send(370, j["data"].get<std::string>());
 		return (0);
 	});
+	this->_peerProto.add(371, [=](std::string str){
+		json j = json::parse(str);
+
+		this->send(371, j["data"].get<std::string>());
+		return (0);
+	});
 	this->_peerProto.add(402, [=](std::string str){
 		this->send(402);
 		return (0);
@@ -155,7 +162,7 @@ void bkc::node::servCon::peerProto()
 		bkc::rsaKey key;
 
 		key.importPub(j["user"].get<std::string>());
-		if (key.verifyPrintable(this->_id_msg, j["data"].get<std::string>())){
+		if (key.verifyPrintable(this->_id_msg, j["data"].get<std::string>()) && bkc::lists::isOk(j["user"].get<std::string>())){
 			this->_userKey = j["user"].get<std::string>();
 			json j = {
 				{"code", 101},
@@ -245,6 +252,12 @@ void bkc::node::servCon::peerProto()
 		json j = json::parse(str);
 
 		this->send(370, j["data"].get<std::string>());
+		return (0);
+	});
+	this->_peerProto.add(371, [=](std::string str){
+		json j = json::parse(str);
+
+		this->send(371, j["data"].get<std::string>());
 		return (0);
 	});
 	this->_peerProto.add(402, [=](std::string str){

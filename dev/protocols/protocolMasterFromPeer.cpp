@@ -4,6 +4,7 @@
 #include "peerConnector.hpp"
 #include "connectedPeer.hpp"
 #include "chain.hpp"
+#include "lists.hpp"
 
 void bfc::masterThread::peerProto()
 {
@@ -71,6 +72,18 @@ void bfc::masterThread::peerProto()
 	});
 	this->_peer.add(370, [=](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){
 		bfc::masterThread::actor("chain").send(370, data.second);
+		return (0);
+	});
+	this->_peer.add(371, [=](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){
+		json j = json::parse(data.second);
+		bool white = false;
+		bool black = false;
+
+		if (j.count("whitelist"))
+			white = j["whitelist"].get<bool>();
+		if (j.count("blacklist"))
+			black = j["blacklist"].get<bool>();
+		bkc::lists::unserialize(j["list"].get<std::string>(), j["whitelist"].get<bool>(), j["blacklist"].get<bool>());
 		return (0);
 	});
 	this->_peer.add(402, [=](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){

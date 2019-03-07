@@ -13,6 +13,8 @@
 #include "rsaKey.hpp"
 #include "getMyIp.hpp"
 
+#include "lists.hpp"
+
 #include "trans.hpp"
 #include "chain.hpp"
 
@@ -42,6 +44,7 @@ void bfc::initActor()
 	bfc::usage.add({"--pri=FILE"}, "select the public key file to read (or write if --create is used)");
 	bfc::usage.add({"--conf=FILE"}, "read a designated conf file. default: ./conf.bkc");
 	bfc::usage.add({"--version"}, "print version");
+	bfc::usage.add({"--list=FILE"}, "select a file to read to white/black list from");
 
 	if (bfc::flags::isSet("help")){
 		std::cout << bfc::usage << std::endl;
@@ -66,6 +69,11 @@ void bfc::initActor()
 	} else {
 		readConfFile(file);
 	}
+	if (bfc::flags::isSet("list")){
+		bkc::lists::load(bfc::flags::getValue("list"));
+	} else {
+		bkc::lists::load("list.bkc");
+	}
 }
 
 int bfc::main()
@@ -79,10 +87,6 @@ int bfc::main()
 			bkc::url = bkc::ip + ":" + std::to_string(bkc::port);
 			std::cout << port << std::endl;
 
-
-			// bfc::masterThread::actor("adm").send(352, std::to_string(bkc::port));
-			// bfc::masterThread::actor("adm").send(402);
-			// bfc::masterThread::actor("adm").send(470);
 			bfc::factory<bkc::node::peerServ>("server", 50, port);
 		}
 	} catch (blc::error::exception &e) {

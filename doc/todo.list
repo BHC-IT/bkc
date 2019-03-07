@@ -5,7 +5,7 @@ HIGH :
 	unpure resolve conflict #95%
 	protocol documentation #100%
 	verifie users #100%
-	white/black list #0%
+	white/black list #100%
 	multi-proof #100%
 
 MID:

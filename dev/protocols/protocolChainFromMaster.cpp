@@ -15,6 +15,9 @@ void bkc::chain::masterProto()
 		if (this->verify(t) == true && this->verify(parity) && this->leftOver(t, parity) == 0){
 			this->_book.add(t);
 			this->_book.add(parity);
+			bfc::masterThread::for_each({"peer*"}, [=](std::map<std::string, blc::tools::pipe>::iterator it){
+				bfc::masterThread::actor(it->first).send(310, str);
+			});
 		}
 		return (1);
 	});
@@ -25,6 +28,9 @@ void bkc::chain::masterProto()
 		if (this->_admKeyStr == t.getSender() && this->_admKeyStr == t.getReceiver() && t.getProof() == ""){
 			std::cout << t.getAmount() << " created" << std::endl;
 			this->_book.add(t);
+			bfc::masterThread::for_each({"peer*"}, [=](std::map<std::string, blc::tools::pipe>::iterator it){
+				bfc::masterThread::actor(it->first).send(320, str);
+			});
 		}
 		return (1);
 	});

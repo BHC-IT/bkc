@@ -1,6 +1,7 @@
 #include <bfc/masterThread.hpp>
 #include "cinConnector.hpp"
 
+#include "lists.hpp"
 #include "chain.hpp"
 
 void bkc::node::cinCon::cinProto()
@@ -41,6 +42,17 @@ void bkc::node::cinCon::cinProto()
 		bkc::chain	*chain = dynamic_cast<bkc::chain *>(bfc::masterThread::rep("chain"));
 
 		chain->dump();
+		return (0);
+	});
+	this->_cin.add("reload", [=](std::string str){
+		if (str == "list"){
+			if (bfc::flags::isSet("list")){
+				bkc::lists::load(bfc::flags::getValue("list"));
+			} else {
+				bkc::lists::load("list.bkc");
+			}
+			this->send(371);
+		}
 		return (0);
 	});
 }

@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.1)
 project(dev)
 
-set(BKC_MAJOR_VERSION 0)
-set(BKC_MINOR_VERSION 9)
-set(BKC_PATCH_VERSION 6)
+set(BKC_MAJOR_VERSION 1)
+set(BKC_MINOR_VERSION 0)
+set(BKC_PATCH_VERSION 0)
 set(BKC_VERSION
 	${BKC_MAJOR_VERSION}.${BKC_MINOR_VERSION}.${BKC_PATCH_VERSION}
 	)
@@ -29,6 +29,7 @@ set (SRCS
 	src/handleKeyParam.cpp
 	src/httpPost.cpp
 	src/initChain.cpp
+	src/lists.cpp
 	src/main.cpp
 	src/peerConnector.cpp
 	src/peerServer.cpp
@@ -65,6 +66,7 @@ set (HEADER
 	include/handleKeyParam.hpp
 	include/identity.hpp
 	include/initChain.hpp
+	include/lists.hpp
 	include/httpPost.hpp
 	include/meta.hpp
 	include/peerConnector.hpp

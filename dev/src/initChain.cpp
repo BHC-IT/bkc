@@ -65,13 +65,24 @@ std::string bkc::initChain()
 		int port = std::stoi(outDefStr("5000"));
 		std::cout << green << "use the current key as creator & admin ? " << def;
 		bool keyOk = outDef(true);
+		std::cout << green << "use a whitelist ? " << def;
+		bool white = outDef(false);
+		bool black = false;
+		if (white == false){
+			std::cout << green << "use a blacklist ? " << def;
+			black = outDef(false);
+		}
 
 		o << "{" << std::endl;
 		o << "\t\"name\" : \"" << chainName << "\"," << std::endl;
 		o << "\t\"ip\": \"" << ip << "\"," << std::endl;
 		o << "\t\"port\": " << port << "," << std::endl;
 		o << "\t\"adm_lvl\": " << adm << "," << std::endl;
-		o << "\t\"adm_key\": \"" << bkc::myLog.printablePub() << "\"" << std::endl;
+		o << "\t\"adm_key\": \"" << bkc::myLog.printablePub() << "\"," << std::endl;
+		if (white)
+			o << "\t\"whitelist\": true" << std::endl;
+		if (black)
+			o << "\t\"blacklist\": true" << std::endl;
 		o << "}";
 		if (bfc::flags::isSet("use")){
 			return (filename);

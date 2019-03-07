@@ -3,6 +3,7 @@
 #include "peerConnector.hpp"
 #include "identity.hpp"
 #include "httpPost.hpp"
+#include "lists.hpp"
 
 using json = nlohmann::json;
 
@@ -77,7 +78,7 @@ void bkc::node::peerCon::readPeer()
 
 	try {
 		code = js["code"].get<int>();
-		if ((this->_userKey == "" || this->_userKey != js["user"].get<std::string>()) && code > 300 && code < 400){
+		if ((this->_userKey == "" || this->_userKey != js["user"].get<std::string>()) && code > 300 && code < 400 && bkc::lists::isOk(js["user"].get<std::string>())){
 			std::cout << "nok" << ", code : " << code << std::endl;
 			this->kill();
 		}

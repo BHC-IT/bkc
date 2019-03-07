@@ -1,6 +1,7 @@
 #include <bfc/bfc.hpp>
 #include "chain.hpp"
 #include "identity.hpp"
+#include "lists.hpp"
 
 void bfc::masterThread::cinProto()
 {
@@ -67,6 +68,34 @@ void bfc::masterThread::cinProto()
 		}
 		std::cout << "you are not an admin" << std::endl;
 		return (-1);
+	});
+	this->_cin.add(320, [=](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){
+		bkc::trans 	t = bkc::trans::createTrans(bkc::myLog.printablePub(), bkc::myLog.printablePub(), std::stod(data.second), bkc::myLog);
+
+		if (bfc::flags::isSet("a")){
+			json j = {
+				{"creation", t.serialize()},
+			};
+
+			bfc::masterThread::for_each("peer*", [=](std::map<std::string, blc::tools::pipe>::iterator it){
+				bfc::masterThread::actor(it->first).send(320, j.dump());
+			});
+			bfc::masterThread::actor("chain").send(320, j.dump());
+			return (0);
+		}
+		std::cout << "you are not an admin" << std::endl;
+		return (-1);
+	});
+	this->_cin.add(371, [=](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){
+		json j = {
+			{"list", bkc::lists::serialize()},
+			{"whitelist", bkc::lists::isWhiteList()},
+			{"blacklist", bkc::lists::isBlackList()}
+		};
+		bfc::masterThread::for_each("peer*", [=](std::map<std::string, blc::tools::pipe>::iterator it){
+			bfc::masterThread::actor(it->first).send(371, j.dump());
+		});
+		return (0);
 	});
 	this->_cin.add(420, [this](std::pair<std::map<std::string, blc::tools::pipe>::iterator, std::string> data){
 		for (auto it = this->_knownPeer.begin(); it != this->_knownPeer.end(); it++){
