@@ -78,12 +78,12 @@ std::string bkc::initChain()
 		o << "\t\"ip\": \"" << ip << "\"," << std::endl;
 		o << "\t\"port\": " << port << "," << std::endl;
 		o << "\t\"adm_lvl\": " << adm << "," << std::endl;
-		o << "\t\"adm_key\": \"" << bkc::myLog.printablePub() << "\"," << std::endl;
+		o << "\t\"adm_key\": \"" << bkc::myLog.printablePub() << "\"";
 		if (white)
-			o << "\t\"whitelist\": true" << std::endl;
+			o << "," << std::endl << "\t\"whitelist\": true";
 		if (black)
-			o << "\t\"blacklist\": true" << std::endl;
-		o << "}";
+			o << "," << std::endl << "\t\"blacklist\": true";
+		o << std::endl << "}";
 		if (bfc::flags::isSet("use")){
 			return (filename);
 		}
