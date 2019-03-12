@@ -52,8 +52,8 @@ void bfc::initActor()
 		return;
 	}
 	if (bfc::flags::isSet("version")){
-		std::cout << "\tbkc version : " << BKC_MAJOR_VERSION << "." << BKC_MINOR_VERSION << ". (build:" << BKC_PATCH_VERSION << ")" << std::endl;
-		std::cout << "\trunning with bfc version : " << BFC_MAJOR_VERSION << "." << BFC_MINOR_VERSION << std::endl;
+		// std::cout << "\tbkc version : " << BKC_MAJOR_VERSION << "." << BKC_MINOR_VERSION << ". (build:" << BKC_PATCH_VERSION << ")" << std::endl;
+		// std::cout << "\trunning with bfc version : " << BFC_MAJOR_VERSION << "." << BFC_MINOR_VERSION << std::endl;
 		bfc::exit();
 		return;
 	}

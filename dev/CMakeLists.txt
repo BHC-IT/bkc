@@ -3,14 +3,10 @@ project(dev)
 
 set(BKC_MAJOR_VERSION 1)
 set(BKC_MINOR_VERSION 0)
-set(BKC_PATCH_VERSION 1)
+set(BKC_PATCH_VERSION 2)
 set(BKC_VERSION
 	${BKC_MAJOR_VERSION}.${BKC_MINOR_VERSION}.${BKC_PATCH_VERSION}
 	)
-
-add_compile_definitions(BKC_MAJOR_VERSION=${BKC_MAJOR_VERSION})
-add_compile_definitions(BKC_MINOR_VERSION=${BKC_MINOR_VERSION})
-add_compile_definitions(BKC_PATCH_VERSION=${BKC_PATCH_VERSION})
 
 set (GCC_COVERAGE_COMPILE_FLAGS "-DTFM_DESC -DTFM_DESC -DLTM_DESC -DMP_32BIT -USE_TFM")
 
@@ -86,6 +82,10 @@ target_include_directories(devobj PRIVATE ../dep/rsa/include)
 
 target_link_libraries(devobj PRIVATE Threads::Threads)
 target_link_libraries(devobj PRIVATE blc)
+
+target_compile_definitions(devobj PRIVATE BKC_MAJOR_VERSION=${BKC_MAJOR_VERSION})
+target_compile_definitions(devobj PRIVATE BKC_MINOR_VERSION=${BKC_MINOR_VERSION})
+target_compile_definitions(devobj PRIVATE BKC_PATCH_VERSION=${BKC_PATCH_VERSION})
 
 set_property(TARGET devobj PROPERTY CXX_STANDARD 17)
 
