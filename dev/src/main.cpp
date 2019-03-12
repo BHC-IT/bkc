@@ -18,6 +18,8 @@
 #include "trans.hpp"
 #include "chain.hpp"
 
+#include "version.hpp"
+
 #include <stdio.h>
 #include <ios>
 #include <iomanip>
@@ -53,7 +55,7 @@ void bfc::initActor()
 	}
 	if (bfc::flags::isSet("version")){
 		// std::cout << "\tbkc version : " << BKC_MAJOR_VERSION << "." << BKC_MINOR_VERSION << ". (build:" << BKC_PATCH_VERSION << ")" << std::endl;
-		// std::cout << "\trunning with bfc version : " << BFC_MAJOR_VERSION << "." << BFC_MINOR_VERSION << std::endl;
+		std::cout << bkc::getVersion() << std::endl;
 		bfc::exit();
 		return;
 	}

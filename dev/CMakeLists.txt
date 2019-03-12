@@ -3,7 +3,7 @@ project(dev)
 
 set(BKC_MAJOR_VERSION 1)
 set(BKC_MINOR_VERSION 0)
-set(BKC_PATCH_VERSION 2)
+set(BKC_PATCH_VERSION 3)
 set(BKC_VERSION
 	${BKC_MAJOR_VERSION}.${BKC_MINOR_VERSION}.${BKC_PATCH_VERSION}
 	)
@@ -69,6 +69,7 @@ set (HEADER
 	include/peerServer.hpp
 	include/servConnector.hpp
 	include/trans.hpp
+	include/version.hpp.in
 	)
 
 add_library(devobj STATIC ${SRCS} ${HEADER} ${PROTOS})
@@ -86,6 +87,9 @@ target_link_libraries(devobj PRIVATE blc)
 target_compile_definitions(devobj PRIVATE BKC_MAJOR_VERSION=${BKC_MAJOR_VERSION})
 target_compile_definitions(devobj PRIVATE BKC_MINOR_VERSION=${BKC_MINOR_VERSION})
 target_compile_definitions(devobj PRIVATE BKC_PATCH_VERSION=${BKC_PATCH_VERSION})
+
+configure_file( include/version.hpp.in ${CMAKE_BINARY_DIR}/generated/version.hpp )
+include_directories(devobj ${CMAKE_BINARY_DIR}/generated/ )
 
 set_property(TARGET devobj PROPERTY CXX_STANDARD 17)
 
