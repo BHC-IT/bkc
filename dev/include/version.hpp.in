@@ -1,0 +1,20 @@
+#pragma once
+
+#include <string>
+
+namespace bkc {
+	std::string getVersionMajor(){
+		return (std::to_string(@BKC_MAJOR_VERSION@));
+	}
+	std::string getVersionMinor(){
+		return (std::to_string(@BKC_MINOR_VERSION@));
+	}
+	std::string getVersionPatch(){
+		return (std::to_string(@BKC_PATCH_VERSION@));
+	}
+	std::string getVersion(){
+		std::string tmp = std::string("\tbkc version : ") + getVersionMajor() + "." + getVersionMinor() + " (build:" + getVersionPatch() + ")";
+		return (tmp);
+	}
+
+}

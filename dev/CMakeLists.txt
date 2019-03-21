@@ -1,16 +1,12 @@
 cmake_minimum_required(VERSION 3.1)
 project(dev)
 
-set(BKC_MAJOR_VERSION 0)
-set(BKC_MINOR_VERSION 9)
-set(BKC_PATCH_VERSION 6)
+set(BKC_MAJOR_VERSION 1)
+set(BKC_MINOR_VERSION 0)
+set(BKC_PATCH_VERSION 3)
 set(BKC_VERSION
 	${BKC_MAJOR_VERSION}.${BKC_MINOR_VERSION}.${BKC_PATCH_VERSION}
 	)
-
-add_compile_definitions(BKC_MAJOR_VERSION=${BKC_MAJOR_VERSION})
-add_compile_definitions(BKC_MINOR_VERSION=${BKC_MINOR_VERSION})
-add_compile_definitions(BKC_PATCH_VERSION=${BKC_PATCH_VERSION})
 
 set (GCC_COVERAGE_COMPILE_FLAGS "-DTFM_DESC -DTFM_DESC -DLTM_DESC -DMP_32BIT -USE_TFM")
 
@@ -29,6 +25,7 @@ set (SRCS
 	src/handleKeyParam.cpp
 	src/httpPost.cpp
 	src/initChain.cpp
+	src/lists.cpp
 	src/main.cpp
 	src/peerConnector.cpp
 	src/peerServer.cpp
@@ -65,12 +62,14 @@ set (HEADER
 	include/handleKeyParam.hpp
 	include/identity.hpp
 	include/initChain.hpp
+	include/lists.hpp
 	include/httpPost.hpp
 	include/meta.hpp
 	include/peerConnector.hpp
 	include/peerServer.hpp
 	include/servConnector.hpp
 	include/trans.hpp
+	include/version.hpp.in
 	)
 
 add_library(devobj STATIC ${SRCS} ${HEADER} ${PROTOS})
@@ -84,6 +83,13 @@ target_include_directories(devobj PRIVATE ../dep/rsa/include)
 
 target_link_libraries(devobj PRIVATE Threads::Threads)
 target_link_libraries(devobj PRIVATE blc)
+
+target_compile_definitions(devobj PRIVATE BKC_MAJOR_VERSION=${BKC_MAJOR_VERSION})
+target_compile_definitions(devobj PRIVATE BKC_MINOR_VERSION=${BKC_MINOR_VERSION})
+target_compile_definitions(devobj PRIVATE BKC_PATCH_VERSION=${BKC_PATCH_VERSION})
+
+configure_file( include/version.hpp.in ${CMAKE_BINARY_DIR}/generated/version.hpp )
+include_directories(devobj ${CMAKE_BINARY_DIR}/generated/ )
 
 set_property(TARGET devobj PROPERTY CXX_STANDARD 17)
 

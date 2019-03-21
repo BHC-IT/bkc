@@ -13,6 +13,7 @@
 #include "trans.hpp"
 #include "chain.hpp"
 #include "rsaKey.hpp"
+#include "lists.hpp"
 
 #include <stdio.h>
 #include <ios>
@@ -69,6 +70,11 @@ void readConfFile(const std::string &fileName)
 		addr = j["ip"];
 		port = j["port"].get<int>();
 		bkc::rsaKey admKey;
+
+		if (j.count("whitelist") && j["whitelist"].get<bool>())
+			bkc::lists::setWhiteList();
+		else if (j.count("blacklist") && j["blacklist"].get<bool>())
+			bkc::lists::setBlackList();
 
 		admKey.importPub(j["adm_key"].get<std::string>());
 		bkc::admKey = admKey;

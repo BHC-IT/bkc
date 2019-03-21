@@ -24,6 +24,7 @@ opcode:
 350 : push your identity (public key).
 352 : push your identity (port).
 370 : push the current book.
+371 : push the current list state.
 390 : push a user balance
 
 4xx
@@ -47,6 +48,7 @@ to connect to a peer, you have to respond to the 403 opcode following the proced
 <- 101
 
 you are now connected.
+if the server doesnt send you a 403 message in first place, you can send a blanck opcode (001) to try and trigger it.
 
 
 
@@ -128,6 +130,14 @@ port: port to reach you. type: int
 370:
 data: serialized(transaction + ";")
 transaction: transaction. type: transaction (see transaction section)
+
+371:
+data: serialized({
+	blacklist: bool,
+	whitelist: bool,
+	list: serialized(key + ";")
+})
+/!\ : whitelist have priority. if both blacklist and whitelist are true, the expected behavior is the same as if blacklist was false.
 
 390:
 data: balance

@@ -8,10 +8,6 @@ set(BFC_VERSION
 	${BFC_MAJOR_VERSION}.${BFC_MINOR_VERSION}.${BFC_PATCH_VERSION}
 	)
 
-add_compile_definitions(BFC_MAJOR_VERSION=${BFC_MAJOR_VERSION})
-add_compile_definitions(BFC_MINOR_VERSION=${BFC_MINOR_VERSION})
-add_compile_definitions(BFC_PATCH_VERSION=${BFC_PATCH_VERSION})
-
 set (SRC
 	src/actorRep.cpp
 	src/bfcmain.cpp
@@ -67,6 +63,14 @@ target_link_libraries(bkcnode PRIVATE LTM)
 target_include_directories(bkcnode PRIVATE .)
 target_include_directories(bkcnode PRIVATE ./dep/rsa/libtomcrypt/src/headers/.)
 target_include_directories(bkcnode PRIVATE ./dep/rsa/libtommath)
+
+target_compile_definitions(bkcnode PRIVATE BFC_MAJOR_VERSION=${BFC_MAJOR_VERSION})
+target_compile_definitions(bkcnode PRIVATE BFC_MINOR_VERSION=${BFC_MINOR_VERSION})
+target_compile_definitions(bkcnode PRIVATE BFC_PATCH_VERSION=${BFC_PATCH_VERSION})
+
+target_compile_definitions(frame PRIVATE BFC_MAJOR_VERSION=${BFC_MAJOR_VERSION})
+target_compile_definitions(frame PRIVATE BFC_MINOR_VERSION=${BFC_MINOR_VERSION})
+target_compile_definitions(frame PRIVATE BFC_PATCH_VERSION=${BFC_PATCH_VERSION})
 
 set_property(TARGET frame PROPERTY CXX_STANDARD 11)
 set_property(TARGET bkcnode PROPERTY CXX_STANDARD 17)
