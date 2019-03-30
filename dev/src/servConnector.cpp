@@ -175,7 +175,7 @@ void bkc::node::servCon::readPeer()
 	}
 	nlohmann::json js = nlohmann::json::parse(tmp);
 
-	std::cout << js.dump() << std::endl;
+	std::cout << std::endl << js.dump() << std::endl << std::endl;
 	try {
 		code = js["code"].get<int>();
 		if ((this->_userKey == "" || this->_userKey != js["user"].get<std::string>()) && code > 300 && code < 400 && bkc::lists::isOk(js["user"].get<std::string>())){
