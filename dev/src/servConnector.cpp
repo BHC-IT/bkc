@@ -175,7 +175,9 @@ void bkc::node::servCon::readPeer()
 	}
 	nlohmann::json js = nlohmann::json::parse(tmp);
 
-	std::cout << std::endl << js.dump() << std::endl << std::endl;
+	std::cout << std::endl << "client : " << this->_name << "send - " << std::endl;
+	std::cout << "\tcode" << js["code"] << std::endl;
+	std::cout << "\tdata" << js["data"] << std::endl << std::endl;
 	try {
 		code = js["code"].get<int>();
 		if ((this->_userKey == "" || this->_userKey != js["user"].get<std::string>()) && code > 300 && code < 400 && bkc::lists::isOk(js["user"].get<std::string>())){
@@ -187,7 +189,7 @@ void bkc::node::servCon::readPeer()
 		tmp = js.dump();
 		this->_peerProto.activate(code, tmp);
 	} catch (std::exception &e) {
-		bfc::cout << "error: client code was: " << e.what() << blc::endl;
+		bfc::cout << "error with client " << this->_name << " : " << e.what() << blc::endl;
 	}
 	if (http){
 		this->send(280, this->_name);
