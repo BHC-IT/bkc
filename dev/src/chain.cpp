@@ -176,4 +176,5 @@ void bkc::chain::thick()
 		this->dump();
 		i = 0;
 	}
+	i++;
 }
