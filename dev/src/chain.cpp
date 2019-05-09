@@ -123,12 +123,8 @@ double bkc::chain::leftOver(const bkc::trans &t, const bkc::trans &parity)
 	int tmpParit = round(parity.getAmount() * 1000.0);
 
 	for (auto it : proofs){
-		std::cout << "amount : " << it.getAmount() << std::endl;
 		amount += it.getAmount() * 1000;
 	}
-	std::cout << std::endl << tmpTrans << std::endl;
-	std::cout << tmpParit << std::endl;
-	std::cout << amount << std::endl;
 	return (amount - (tmpTrans + tmpParit));
 }
 
