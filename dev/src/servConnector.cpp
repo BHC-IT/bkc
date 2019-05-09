@@ -86,6 +86,7 @@ void bkc::node::servCon::readMaster()
 	} catch (std::exception &e) {
 		bfc::cout << "error: master code was: " << data << blc::endl;
 	}
+	this->_pipe.waitRead(500);
 	std::string tmp = this->_pipe.read();
 
 	if (this->_masterProto.activate(code, tmp) == 280){
@@ -175,9 +176,6 @@ void bkc::node::servCon::readPeer()
 	}
 	nlohmann::json js = nlohmann::json::parse(tmp);
 
-	std::cout << std::endl << "client : " << this->_name << " send - " << std::endl;
-	std::cout << "\tcode : " << js["code"] << std::endl;
-	std::cout << "\tdata : " << js["data"] << std::endl << std::endl;
 	try {
 		code = js["code"].get<int>();
 		if ((this->_userKey == "" || this->_userKey != js["user"].get<std::string>()) && code > 300 && code < 400 && bkc::lists::isOk(js["user"].get<std::string>())){

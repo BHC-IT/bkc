@@ -84,10 +84,10 @@ bkc::trans bkc::chain::consum(const std::string &sign)
 	double			to_spend = 0;
 
 	for (auto it : tmp){
-		already_spent += it.getAmount();
+		already_spent += round(it.getAmount()) * 1000;
 	}
 	for (auto it : proofs){
-		to_spend += it.getAmount();
+		to_spend += round(it.getAmount()) * 1000;
 	}
 	bkc::trans t = bkc::trans::createTrans(proofs[0].getSender(), proofs[0].getSender(), to_spend - already_spent, bkc::myLog);
 	t.setProof(sign);
@@ -119,11 +119,17 @@ double bkc::chain::leftOver(const bkc::trans &t, const bkc::trans &parity)
 {
 	std::vector<bkc::trans> proofs = this->_book.getAllProof(t.getProof());
 	double amount = 0;
+	int tmpTrans = round(t.getAmount() * 1000.0);
+	int tmpParit = round(parity.getAmount() * 1000.0);
 
 	for (auto it : proofs){
-		amount += it.getAmount();
+		std::cout << "amount : " << it.getAmount() << std::endl;
+		amount += it.getAmount() * 1000;
 	}
-	return (amount - (t.getAmount() + parity.getAmount()));
+	std::cout << std::endl << tmpTrans << std::endl;
+	std::cout << tmpParit << std::endl;
+	std::cout << amount << std::endl;
+	return (amount - (tmpTrans + tmpParit));
 }
 
 void bkc::chain::add(const bkc::trans &t)
