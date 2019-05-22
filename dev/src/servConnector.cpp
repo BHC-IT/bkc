@@ -79,6 +79,7 @@ bkc::node::servCon::servCon(blc::tools::pipe pipe, std::string name, int sock, s
 void bkc::node::servCon::readMaster()
 {
 	int code = 0;
+	std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(5));
 	std::string data = this->_pipe.read();
 
 	try {
