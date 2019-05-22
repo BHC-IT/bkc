@@ -74,7 +74,7 @@ bkc::trans bkc::chain::getLeftOver(const bkc::trans &t) const
 	}
 	tmp = to_spend - t.getAmount();
 	parity = bkc::trans::createTrans(t.getSender(), t.getSender(), std::round(tmp * 1000.0) / 1000.0, bkc::myLog);
-	parity.setProof(t.getProof());
+		parity.setProof(t.getProof());
 	return (parity);
 }
 
@@ -121,9 +121,11 @@ double bkc::chain::leftOver(const bkc::trans &t, const bkc::trans &parity)
 {
 	std::vector<bkc::trans> proofs = this->_book.getAllProof(t.getProof());
 	double amount = 0;
-	int tmpTrans = round(t.getAmount() * 1000.0);
-	int tmpParit = round(parity.getAmount() * 1000.0);
+	double tmpTrans = round(t.getAmount() * 1000.0);
+	double tmpParit = round(parity.getAmount() * 1000.0);
 
+	std::cout << std::fixed << std::setprecision(20) << "trans : " << tmpTrans << std::endl;
+	std::cout << std::fixed << std::setprecision(20) << "parity : " << tmpParit << std::endl;
 	for (auto it : proofs){
 		amount += it.getAmount() * 1000;
 	}
