@@ -73,10 +73,7 @@ bkc::trans bkc::chain::getLeftOver(const bkc::trans &t) const
 		to_spend += it.getAmount();
 	}
 	tmp = to_spend - t.getAmount();
-	std::cout << std::fixed << std::setprecision(20) << "amount : " << t.getAmount() << std::endl;
-	std::cout << std::fixed << std::setprecision(20) << "tmp : " << (double)(std::round(tmp * 1000) / (double)1000) << std::endl;
 	parity = bkc::trans::createTrans(t.getSender(), t.getSender(), std::round(tmp * 1000.0) / 1000.0, bkc::myLog);
-	std::cout << std::fixed << std::setprecision(20) << "parity : " << parity.getAmount() << std::endl;
 	parity.setProof(t.getProof());
 	return (parity);
 }
