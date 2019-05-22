@@ -1,5 +1,6 @@
 #include "chain.hpp"
 #include "identity.hpp"
+#include <iomanip>
 
 bkc::chain::chain(blc::tools::pipe &pipe, std::string name, bkc::rsaKey key, unsigned char admLvl, std::string in, std::string out) : actor(pipe, name), _admKey(key), _admLvl(admLvl), _in(in), _out(out)
 {
@@ -26,8 +27,9 @@ double bkc::chain::getBalance(const std::string &key) const
 	double balance = 0;
 
 	for (auto it : v){
-		if (this->_book.consumed(it.getSign()) == false)
+		if (this->_book.consumed(it.getSign()) == false){
 			balance += it.getAmount();
+		}
 	}
 	return (balance);
 }
@@ -71,7 +73,10 @@ bkc::trans bkc::chain::getLeftOver(const bkc::trans &t) const
 		to_spend += it.getAmount();
 	}
 	tmp = to_spend - t.getAmount();
-	parity = bkc::trans::createTrans(t.getSender(), t.getSender(), round(tmp * 1000.0) / 1000.0, bkc::myLog);
+	std::cout << std::fixed << std::setprecision(20) << "amount : " << t.getAmount() << std::endl;
+	std::cout << std::fixed << std::setprecision(20) << "tmp : " << (double)(std::round(tmp * 1000) / (double)1000) << std::endl;
+	parity = bkc::trans::createTrans(t.getSender(), t.getSender(), std::round(tmp * 1000.0) / 1000.0, bkc::myLog);
+	std::cout << std::fixed << std::setprecision(20) << "parity : " << parity.getAmount() << std::endl;
 	parity.setProof(t.getProof());
 	return (parity);
 }
