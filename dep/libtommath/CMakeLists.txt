@@ -117,6 +117,7 @@ set (GCC_COVERAGE_COMPILE_FLAGS "-O2 -fno-stack-protector -DNDEBUG -Wall")
 
 add_library(LTM STATIC ${SRC} ${HEADER})
 target_include_directories(LTM PRIVATE .)
+target_include_directories(LTM PRIVATE ..)
 
 add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")

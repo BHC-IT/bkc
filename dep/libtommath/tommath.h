@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include <limits.h>
 
-#include <tommath_class.h>
+#include <libtommath/tommath_class.h>
 
 #ifdef __cplusplus
 extern "C" {

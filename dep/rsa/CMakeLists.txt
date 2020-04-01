@@ -18,14 +18,8 @@ set (HEADER
 	)
 
 add_library(RSA STATIC ${SRC} ${HEADER})
-add_subdirectory(libtommath/)
-add_subdirectory(libtomcrypt/)
 
 set_property(TARGET RSA PROPERTY CXX_STANDARD 17)
 
-target_link_libraries(RSA PRIVATE LTM)
-target_link_libraries(RSA PRIVATE LTC)
-
 target_include_directories(RSA PRIVATE ./include)
-target_include_directories(RSA PRIVATE ./libtomcrypt/src/headers/.)
-target_include_directories(RSA PRIVATE ./libtommath)
+target_include_directories(RSA PRIVATE ../../include/.)
