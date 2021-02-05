@@ -1,6 +1,6 @@
 #pragma once
 
-#include "rsaKey.hpp"
+#include <rsa/rsaKey.hpp>
 
 namespace bkc {
 	extern rsaKey myLog;

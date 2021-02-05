@@ -1,6 +1,8 @@
 #include <blc/blc.hpp>
 #include <nlohmann/json.hpp>
 #include <bfc/bfc.hpp>
+#include <rsa/rsaKey.hpp>
+
 #include "adminConnector.hpp"
 #include "cinConnector.hpp"
 #include "peerServer.hpp"
@@ -10,7 +12,6 @@
 #include "confFile.hpp"
 #include "initChain.hpp"
 
-#include "rsaKey.hpp"
 #include "getMyIp.hpp"
 
 #include "lists.hpp"

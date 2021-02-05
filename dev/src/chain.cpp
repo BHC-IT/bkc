@@ -1,5 +1,6 @@
 #include "chain.hpp"
 #include "identity.hpp"
+#include <iomanip>
 
 bkc::chain::chain(blc::tools::pipe &pipe, std::string name, bkc::rsaKey key, unsigned char admLvl, std::string in, std::string out) : actor(pipe, name), _admKey(key), _admLvl(admLvl), _in(in), _out(out)
 {
@@ -26,8 +27,9 @@ double bkc::chain::getBalance(const std::string &key) const
 	double balance = 0;
 
 	for (auto it : v){
-		if (this->_book.consumed(it.getSign()) == false)
+		if (this->_book.consumed(it.getSign()) == false){
 			balance += it.getAmount();
+		}
 	}
 	return (balance);
 }
@@ -71,8 +73,8 @@ bkc::trans bkc::chain::getLeftOver(const bkc::trans &t) const
 		to_spend += it.getAmount();
 	}
 	tmp = to_spend - t.getAmount();
-	parity = bkc::trans::createTrans(t.getSender(), t.getSender(), round(tmp * 1000.0) / 1000.0, bkc::myLog);
-	parity.setProof(t.getProof());
+	parity = bkc::trans::createTrans(t.getSender(), t.getSender(), std::round(tmp * 1000.0) / 1000.0, bkc::myLog);
+		parity.setProof(t.getProof());
 	return (parity);
 }
 
@@ -84,10 +86,10 @@ bkc::trans bkc::chain::consum(const std::string &sign)
 	double			to_spend = 0;
 
 	for (auto it : tmp){
-		already_spent += it.getAmount();
+		already_spent += round(it.getAmount()) * 1000;
 	}
 	for (auto it : proofs){
-		to_spend += it.getAmount();
+		to_spend += round(it.getAmount()) * 1000;
 	}
 	bkc::trans t = bkc::trans::createTrans(proofs[0].getSender(), proofs[0].getSender(), to_spend - already_spent, bkc::myLog);
 	t.setProof(sign);
@@ -119,11 +121,15 @@ double bkc::chain::leftOver(const bkc::trans &t, const bkc::trans &parity)
 {
 	std::vector<bkc::trans> proofs = this->_book.getAllProof(t.getProof());
 	double amount = 0;
+	double tmpTrans = round(t.getAmount() * 1000.0);
+	double tmpParit = round(parity.getAmount() * 1000.0);
 
+	std::cout << std::fixed << std::setprecision(20) << "trans : " << tmpTrans << std::endl;
+	std::cout << std::fixed << std::setprecision(20) << "parity : " << tmpParit << std::endl;
 	for (auto it : proofs){
-		amount += it.getAmount();
+		amount += it.getAmount() * 1000;
 	}
-	return (amount - (t.getAmount() + parity.getAmount()));
+	return (amount - (tmpTrans + tmpParit));
 }
 
 void bkc::chain::add(const bkc::trans &t)
@@ -174,4 +180,5 @@ void bkc::chain::thick()
 		this->dump();
 		i = 0;
 	}
+	i++;
 }

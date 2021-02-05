@@ -55,4 +55,9 @@ void bkc::node::cinCon::cinProto()
 		}
 		return (0);
 	});
+	this->_cin.add("help", [=](std::string str){
+		bfc::cout << "list of command :\n\tquit\n\tpush\n\tprint\n\tsend\n\tcreate\n\tdump\n\treload\n\thelp" << blc::endl;
+
+		return (0);
+	});
 }

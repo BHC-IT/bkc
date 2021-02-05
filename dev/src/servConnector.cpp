@@ -79,6 +79,7 @@ bkc::node::servCon::servCon(blc::tools::pipe pipe, std::string name, int sock, s
 void bkc::node::servCon::readMaster()
 {
 	int code = 0;
+	std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(5));
 	std::string data = this->_pipe.read();
 
 	try {
@@ -86,6 +87,7 @@ void bkc::node::servCon::readMaster()
 	} catch (std::exception &e) {
 		bfc::cout << "error: master code was: " << data << blc::endl;
 	}
+	this->_pipe.waitRead(500);
 	std::string tmp = this->_pipe.read();
 
 	if (this->_masterProto.activate(code, tmp) == 280){
@@ -186,7 +188,7 @@ void bkc::node::servCon::readPeer()
 		tmp = js.dump();
 		this->_peerProto.activate(code, tmp);
 	} catch (std::exception &e) {
-		bfc::cout << "error: client code was: " << e.what() << blc::endl;
+		bfc::cout << "error with client " << this->_name << " : " << e.what() << blc::endl;
 	}
 	if (http){
 		this->send(280, this->_name);

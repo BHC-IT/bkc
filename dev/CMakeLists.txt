@@ -3,7 +3,7 @@ project(dev)
 
 set(BKC_MAJOR_VERSION 1)
 set(BKC_MINOR_VERSION 0)
-set(BKC_PATCH_VERSION 3)
+set(BKC_PATCH_VERSION 5)
 set(BKC_VERSION
 	${BKC_MAJOR_VERSION}.${BKC_MINOR_VERSION}.${BKC_PATCH_VERSION}
 	)
@@ -77,9 +77,6 @@ add_library(devobj STATIC ${SRCS} ${HEADER} ${PROTOS})
 target_include_directories(devobj PRIVATE ./include)
 target_include_directories(devobj PRIVATE ../)
 target_include_directories(devobj PRIVATE ../include/.)
-target_include_directories(devobj PRIVATE ../dep/rsa/libtomcrypt/src/headers/.)
-target_include_directories(devobj PRIVATE ../dep/rsa/libtommath)
-target_include_directories(devobj PRIVATE ../dep/rsa/include)
 
 target_link_libraries(devobj PRIVATE Threads::Threads)
 target_link_libraries(devobj PRIVATE blc)

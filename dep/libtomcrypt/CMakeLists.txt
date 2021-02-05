@@ -117,15 +117,13 @@ set (HEADER
 	src/headers/tomcrypt.h
 	src/headers/tomcrypt_pkcs.h
 	src/headers/tomcrypt_prng.h
-	src/hashes/sha2/sha224.c
-	src/hashes/sha2/sha384.c
 	)
 
 set (GCC_COVERAGE_COMPILE_FLAGS "-O2 -fno-stack-protector -DNDEBUG -Wall -DLTC_SOURCE -DLTM_DESC -DMP_32BIT")
 
 add_library(LTC STATIC ${SRC} ${HEADER})
 target_include_directories(LTC PRIVATE src/headers)
-target_include_directories(LTC PRIVATE ../libtommath/.)
+target_include_directories(LTC PRIVATE ../../include/.)
 target_include_directories(LTC PRIVATE .)
 
 add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})

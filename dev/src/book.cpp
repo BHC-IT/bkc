@@ -1,4 +1,5 @@
 #include "book.hpp"
+#include <iomanip>
 
 bkc::book::book()
 {
@@ -92,7 +93,9 @@ bool bkc::book::consumed(const std::string &sign) const
 	for (auto it : tmp){
 		already_spent += it.getAmount();
 	}
-	if (already_spent >= proof.getAmount())
+	// std::cout << "consumed report : " << already_spent << "/" << proof.getAmount() << std::endl;
+	// std::cout << std::fixed << std::setprecision(20) << "ending with : (" << already_spent << " >= " << proof.getAmount() << ") => " << (std::round(already_spent * 1000) == std::round(proof.getAmount() * 1000)) << std::endl;
+	if (std::round(already_spent * 1000) >= std::round(proof.getAmount() * 1000))
 		return (true);
 	return (false);
 }
